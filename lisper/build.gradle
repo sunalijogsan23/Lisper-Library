@@ -59,9 +59,9 @@ ext {
     developerEmail = 'sunnali.jogsan@lintel.in'
     organization = 'github'
 
-    licenseName = 'The Apache Software License, Version 2.0'  //Example for license
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+    licenseName = 'GNU General Public License v3.0'
+    licenseUrl = 'http://www.gnu.org/licenses/'
+    allLicenses = ['GPL-3.0']
 
 }
 //These two remote files contain Bintray configuration as described above.
