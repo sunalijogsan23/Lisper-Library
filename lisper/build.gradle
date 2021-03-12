@@ -36,3 +36,34 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
+
+ext {
+
+    //For bintray and jcenter distribution
+    bintrayRepo = 'maven'
+    bintrayName = 'Lisper-Library'
+
+    publishedGroupId = 'com.lintel.lisper'
+    libraryName = 'LisperLibrary'
+    artifact = 'lisper' //This artifact name should be the same with library module name
+
+    libraryDescription = 'Simple, clean and short description'
+
+    siteUrl = 'https://github.com/sunalijogsan23/Lisper-Library'
+    gitUrl = 'https://github.com/sunalijogsan23/Lisper-Library.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'lisper'
+    developerName = 'Lisper'
+    developerEmail = 'sunnali.jogsan@lintel.in'
+    organization = 'github'
+
+    licenseName = 'The Apache Software License, Version 2.0'  //Example for license
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+
+}
+//These two remote files contain Bintray configuration as described above.
+apply from: 'https://raw.githubusercontent.com/quangctkm9207/template-files/master/android/gradle/install.gradle'
+apply from: 'https://raw.githubusercontent.com/quangctkm9207/template-files/master/android/gradle/bintray.gradle'
