@@ -1,2 +1,1 @@
 include ':lisper'
-rootProject.name = "Lisper-Library"
