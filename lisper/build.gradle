@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'com.jfrog.bintray'
 }
 
 android {
@@ -30,7 +31,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -40,33 +41,31 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
-ext {
+version = '0.1.1'
 
-    //For bintray and jcenter distribution
-    bintrayRepo = 'maven'
-    bintrayName = 'Lisper-Library'
+ext {
+    bintrayRepo = 'lisper-sdk'
+    bintrayName = 'com.lintel.lisper'
 
     publishedGroupId = 'com.lintel.lisper'
-    libraryName = 'LisperLibrary'
-    artifact = 'lisper' //This artifact name should be the same with library module name
+    libraryName = 'Lisper'
+    artifact = 'com.lintel.lisper'
 
-    libraryDescription = 'Simple, clean and short description'
+    libraryDescription = 'A wrapper for Facebook Native Like Button (LikeView) on Android'
 
     siteUrl = 'https://github.com/sunalijogsan23/Lisper-Library'
     gitUrl = 'https://github.com/sunalijogsan23/Lisper-Library.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '0.1.1'
 
     developerId = 'sunali-lintel'
-    developerName = 'Lisper'
-    developerEmail = 'sunnali.jogsan@lintel.in'
-    organization = 'github'
+    developerName = 'Sunali'
+    developerEmail = 'sunali.jogsan@lintel.in'
 
-    licenseName = 'GNU General Public License v3.0'
-    licenseUrl = 'http://www.gnu.org/licenses/'
-    allLicenses = ['GPL-3.0']
-
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
 }
-//These two remote files contain Bintray configuration as described above.
-apply from: 'https://raw.githubusercontent.com/quangctkm9207/template-files/master/android/gradle/install.gradle'
-apply from: 'https://raw.githubusercontent.com/quangctkm9207/template-files/master/android/gradle/bintray.gradle'
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
