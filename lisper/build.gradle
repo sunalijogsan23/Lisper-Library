@@ -19,6 +19,12 @@ android {
         ndk {
             moduleName "libpjsua2"
         }
+
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_STL=c++_shared"
+            }
+        }
     }
 
     sourceSets.main {
