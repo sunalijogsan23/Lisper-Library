@@ -2296,7 +2296,7 @@ public class pjsua2JNI {
   public final static native void PendingJob_execute(long jarg1, PendingJob jarg1_, boolean jarg2);
   public final static native void delete_PendingJob(long jarg1);
   public final static native long Endpoint_instance() throws java.lang.Exception;
-  public final static native long new_Endpoint();
+  public final static native long newEndpoint();
   public final static native void delete_Endpoint(long jarg1);
   public final static native long Endpoint_libVersion(long jarg1, Endpoint jarg1_);
   public final static native void Endpoint_libCreate(long jarg1, Endpoint jarg1_) throws java.lang.Exception;
@@ -2502,8 +2502,8 @@ public class pjsua2JNI {
     jself.onSelectAccount(new OnSelectAccountParam(prm, false));
   }
 
-  private final static native void swig_module_init();
+  private final static native void swigmoduleinit();
   static {
-    swig_module_init();
+    swigmoduleinit();
   }
 }
