@@ -3,6 +3,6 @@
     package="com.lintel.lisper">
 
     <application
-        android:name="org.lisper.pjsua2.App"/>
+        android:name="org.pjsip.pjsua2.App"/>
 
 </manifest>
