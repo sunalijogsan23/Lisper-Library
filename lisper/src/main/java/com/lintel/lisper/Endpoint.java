@@ -65,7 +65,7 @@ public class Endpoint {
   }
 
   public Endpoint() {
-    this(pjsua2JNI.newEndpoint(), true);
+    this(pjsua2JNI.new_Endpoint(), true);
     pjsua2JNI.Endpoint_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 

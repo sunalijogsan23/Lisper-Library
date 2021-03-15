@@ -18,6 +18,7 @@ android {
 
         ndk {
             moduleName "libpjsua2"
+            abiFilters 'armeabi-v7a'
         }
 
         externalNativeBuild {
