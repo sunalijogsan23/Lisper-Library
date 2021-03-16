@@ -18,13 +18,12 @@ import org.pjsip.pjsua2.StringVector;
 import org.pjsip.pjsua2.pjsip_inv_state;
 import org.pjsip.pjsua2.pjsip_status_code;
 
-public class Lisper implements Handler.Callback {
+public class Lisper {
     public static MyApp app = null;
     public static MyCall currentCall = null;
     public static MyAccount account = null;
     public static AccountConfig accCfg = null;
     public static String lastRegStatus = "";
-    private final Handler handler = new Handler(this);
 
     public class MSG_TYPE {
         public final static int INCOMING_CALL = 1;
@@ -110,7 +109,7 @@ public class Lisper implements Handler.Callback {
         }
     }
 
-    public void notifyIncomingCall(MyCall call) {
+    /*public void notifyIncomingCall(MyCall call) {
         Message m = Message.obtain(handler, MSG_TYPE.INCOMING_CALL, call);
         m.sendToTarget();
     }
@@ -150,90 +149,6 @@ public class Lisper implements Handler.Callback {
         {
             currentCall = null;
         }
-    }
+    }*/
 
-    @Override
-    public boolean handleMessage(@NonNull Message m) {
-        if (m.what == 0) {
-
-            app.deinit();
-            //finish();
-            Runtime.getRuntime().gc();
-            android.os.Process.killProcess(android.os.Process.myPid());
-
-        }
-        else if (m.what == MSG_TYPE.CALL_STATE) {
-
-            CallInfo ci = (CallInfo) m.obj;
-
-            /* Forward the message to CallActivity */
-            if (handler != null) {
-                Message m2 = Message.obtain(handler, MSG_TYPE.CALL_STATE, ci);
-                m2.sendToTarget();
-            }
-
-        }
-        else if (m.what == MSG_TYPE.BUDDY_STATE) {
-
-            MyBuddy buddy = (MyBuddy) m.obj;
-            int idx = account.buddyList.indexOf(buddy);
-
-            /* Update buddy status text, if buddy is valid and
-             * the buddy lists in account and UI are sync-ed.
-             */
-            /*if (idx >= 0 && account.buddyList.size() == buddyList.size()) {
-                buddyList.get(idx).put("status", buddy.getStatusText());
-                buddyListAdapter.notifyDataSetChanged();
-                // TODO: selection color/mark is gone after this,
-                //       dont know how to return it back.
-                //buddyListView.setSelection(buddyListSelectedIdx);
-                //buddyListView.performItemClick(buddyListView, buddyListSelectedIdx,
-                //							   buddyListView.getItemIdAtPosition(buddyListSelectedIdx));
-
-                *//* Return back Call activity *//*
-                notifyCallState(currentCall);
-            }*/
-
-        }
-        else if (m.what == MSG_TYPE.REG_STATE) {
-
-            String msg_str = (String) m.obj;
-            lastRegStatus = msg_str;
-
-        }
-        else if (m.what == MSG_TYPE.INCOMING_CALL) {
-
-            /* Incoming call */
-            final MyCall call = (MyCall) m.obj;
-            CallOpParam prm = new CallOpParam();
-
-            /* Only one call at anytime */
-            if (currentCall != null) {
-				/*
-				prm.setStatusCode(pjsip_status_code.PJSIP_SC_BUSY_HERE);
-				try {
-					call.hangup(prm);
-				} catch (Exception e) {}
-				*/
-                // TODO: set status code
-                call.delete();
-                return true;
-            }
-
-            /* Answer with ringing */
-            prm.setStatusCode(pjsip_status_code.PJSIP_SC_RINGING);
-            try {
-                call.answer(prm);
-            } catch (Exception e) {}
-
-            currentCall = call;
-
-        }
-        else {
-            /* Message not handled */
-            return false;
-        }
-
-        return true;
-    }
 }
