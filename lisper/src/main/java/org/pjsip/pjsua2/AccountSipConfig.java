@@ -110,6 +110,7 @@ public class AccountSipConfig extends PersistentObject {
   }
 
   public AccountSipConfig() {
+    //this(pjsua2JNI.new_AccountSipConfig(scheme, realm, user_name, data_type, data), true);
     this(pjsua2JNI.new_AccountSipConfig(), true);
   }
 

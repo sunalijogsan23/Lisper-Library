@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package org.pjsip.lisper;
+package org.lintel.lisper;
 
 import android.util.Log;
 
@@ -272,20 +272,7 @@ class MyApp {
 		System.loadLibrary("pjsua2");
 		System.out.println("pjsip============================> Library loaded");
 	}
-	/*static {
-		try{
-			System.loadLibrary("openh264");
-			System.out.println("open264============================> Library loaded");
-			// Ticket #1937: libyuv is now included as static lib
-			//System.loadLibrary("yuv");
-		} catch (UnsatisfiedLinkError e) {
-			System.out.println("UnsatisfiedLinkError: " + e.getMessage());
-			System.out.println("This could be safely ignored if you " +
-					"don't need video.");
-		}
-		System.loadLibrary("pjsua2");
-		System.out.println("Library loaded");
-	}*/
+
 	public static Endpoint ep = new Endpoint();
 	public static MyAppObserver observer;
 	public ArrayList<MyAccount> accList = new ArrayList<MyAccount>();
