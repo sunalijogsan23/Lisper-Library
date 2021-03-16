@@ -1,21 +1,14 @@
-package org.lintel.lisper;
+package org.pjsip.lisper;
 
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.view.View;
-
-import androidx.annotation.NonNull;
 
 import org.pjsip.pjsua2.AccountConfig;
 import org.pjsip.pjsua2.AccountSipConfig;
 import org.pjsip.pjsua2.AuthCredInfo;
 import org.pjsip.pjsua2.AuthCredInfoVector;
-import org.pjsip.pjsua2.CallInfo;
 import org.pjsip.pjsua2.CallOpParam;
 import org.pjsip.pjsua2.CallSetting;
 import org.pjsip.pjsua2.StringVector;
-import org.pjsip.pjsua2.pjsip_inv_state;
 import org.pjsip.pjsua2.pjsip_status_code;
 
 public class Lisper {
