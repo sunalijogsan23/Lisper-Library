@@ -2,7 +2,9 @@ package org.lintel.lisper;
 
 import android.util.Log;
 
+import org.pjsip.pjsua2.Account;
 import org.pjsip.pjsua2.AccountConfig;
+import org.pjsip.pjsua2.AccountInfo;
 import org.pjsip.pjsua2.AccountSipConfig;
 import org.pjsip.pjsua2.AuthCredInfo;
 import org.pjsip.pjsua2.AuthCredInfoVector;
@@ -25,12 +27,10 @@ public class Lisper {
         public final static int BUDDY_STATE = 4;
     }
 
-    public static void Account_Regi(String acc_id,String registrar,String username, String password,String proxy){
-        accCfg.setIdUri(acc_id);
-        accCfg.getRegConfig().setRegistrarUri(registrar);
-
+    public static void Account_Regi(String acc_id,String registrar,String username, String password){
         accCfg = new AccountConfig();
         accCfg.setIdUri(acc_id);
+        accCfg.getRegConfig().setRegistrarUri(registrar);
         accCfg.getNatConfig().setIceEnabled(true);
         account = app.addAcc(accCfg);
 
@@ -40,11 +40,11 @@ public class Lisper {
             creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
             new AccountSipConfig();
         }
-        StringVector proxies = accCfg.getSipConfig().getProxies();
+        /*StringVector proxies = accCfg.getSipConfig().getProxies();
         proxies.clear();
         if (proxy.length() != 0) {
             proxies.add(proxy);
-        }
+        }*/
 
         /* Finally */
         lastRegStatus = "";
@@ -100,6 +100,11 @@ public class Lisper {
                 System.out.println(e);
             }
         }
+    }
+
+    public static void getAccInfo(){
+        String info = accCfg.getIdUri() + ", " + accCfg.getRegConfig().getRegistrarUri();
+        Log.e("Info",info);
     }
 
     /*public void notifyIncomingCall(MyCall call) {
