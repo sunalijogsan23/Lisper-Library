@@ -18,19 +18,18 @@ android {
 
         ndk {
             moduleName "libpjsua2"
-            abiFilters 'armeabi-v7a'
         }
 
-        externalNativeBuild {
+        /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
             }
-        }
+        }*/
     }
 
     sourceSets.main {
-        jniLibs.srcDir 'libs'
-        jni.srcDirs = []
+        jniLibs.srcDir 'src/main/libs' //set libs as .so's location instead of jni
+        jni.srcDirs = [] //disable automatic ndk-build call with auto-generated Android.mk file
     }
 
     buildTypes {
@@ -67,7 +66,7 @@ ext {
     libraryName = 'Lisper'
     artifact = 'com.lintel.lisper'
 
-    libraryDescription = 'A wrapper for Facebook Native Like Button (LikeView) on Android'
+    libraryDescription = 'A wrapper'
 
     siteUrl = 'https://github.com/sunalijogsan23/Lisper-Library'
     gitUrl = 'https://github.com/sunalijogsan23/Lisper-Library.git'
