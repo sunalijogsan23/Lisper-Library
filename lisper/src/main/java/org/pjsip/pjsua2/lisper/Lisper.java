@@ -1,4 +1,4 @@
-package org.lintel.lisper;
+package org.pjsip.pjsua2.lisper;
 
 import android.util.Log;
 
