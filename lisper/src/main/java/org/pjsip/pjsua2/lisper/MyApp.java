@@ -139,6 +139,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	public ArrayList<MyBuddy> buddyList = new ArrayList<MyBuddy>();
 	public AccountConfig cfg;
 	private final Handler handler = new Handler(this);
+	public static MyAppObserver observer;
 
 	MyAccount(AccountConfig config) {
 		super();
@@ -181,7 +182,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	@Override
 	public void onRegState(OnRegStateParam prm) {
 		Log.e("tag","onRegState  start");
-		MyApp.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
+		observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
 	}
 
 	@Override
@@ -194,7 +195,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		MyApp.observer.notifyIncomingCall(call);
+		observer.notifyIncomingCall(call);
 	}
 	
 	@Override
