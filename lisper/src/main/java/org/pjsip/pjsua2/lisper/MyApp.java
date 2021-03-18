@@ -30,6 +30,7 @@ import org.pjsip.pjsua2.Call;
 import org.pjsip.pjsua2.CallInfo;
 import org.pjsip.pjsua2.CallMediaInfo;
 import org.pjsip.pjsua2.CallMediaInfoVector;
+import org.pjsip.pjsua2.CallSetting;
 import org.pjsip.pjsua2.ContainerNode;
 import org.pjsip.pjsua2.Endpoint;
 import org.pjsip.pjsua2.EpConfig;
@@ -180,6 +181,12 @@ class MyAccount extends Account {
 	public void onIncomingCall(OnIncomingCallParam prm) {
 		System.out.println("======== Incoming call ======== ");
 		MyCall call = new MyCall(this, prm.getCallId());
+		try {
+			CallSetting setting = call.getInfo().getSetting();
+			Log.d(" Log APP ", "onIncomingCall: Audio " + setting.getAudioCount() + "  Video" + setting.getVideoCount());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		//MyApp.observer.notifyIncomingCall(call);
 	}
 	

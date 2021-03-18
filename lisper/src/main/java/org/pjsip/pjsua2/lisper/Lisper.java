@@ -2,15 +2,14 @@ package org.pjsip.pjsua2.lisper;
 
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
+import android.os.Message;
 import android.util.Log;
 
 import org.pjsip.pjsua2.AccountConfig;
-import org.pjsip.pjsua2.AccountSipConfig;
 import org.pjsip.pjsua2.AuthCredInfo;
 import org.pjsip.pjsua2.AuthCredInfoVector;
 import org.pjsip.pjsua2.CallOpParam;
 import org.pjsip.pjsua2.CallSetting;
-import org.pjsip.pjsua2.OnRegStateParam;
 import org.pjsip.pjsua2.pjsip_status_code;
 
 public class Lisper {
@@ -86,6 +85,33 @@ public class Lisper {
         }
 
         currentCall = call;
+    }
+
+    public static boolean IncomingCall(Message m){
+        final MyCall call = (MyCall) m.obj;
+        CallOpParam prm = new CallOpParam();
+
+        /* Only one call at anytime */
+        if (currentCall != null) {
+				/*
+				prm.setStatusCode(pjsip_status_code.PJSIP_SC_BUSY_HERE);
+				try {
+					call.hangup(prm);
+				} catch (Exception e) {}
+				*/
+            // TODO: set status code
+            call.delete();
+            return true;
+        }
+
+        /* Answer with ringing */
+        prm.setStatusCode(pjsip_status_code.PJSIP_SC_RINGING);
+        try {
+            call.answer(prm);
+        } catch (Exception e) {}
+
+        currentCall = call;
+        return false;
     }
 
     public static void acceptCall() {
