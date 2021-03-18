@@ -106,9 +106,9 @@ public class Lisper {
 
         /* Answer with ringing */
         prm.setStatusCode(pjsip_status_code.PJSIP_SC_RINGING);
-        try {
+        /*try {
             call.answer(prm);
-        } catch (Exception e) {}
+        } catch (Exception e) {}*/
 
         currentCall = call;
         return false;
