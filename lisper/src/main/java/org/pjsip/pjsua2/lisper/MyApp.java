@@ -139,7 +139,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	public ArrayList<MyBuddy> buddyList = new ArrayList<MyBuddy>();
 	public AccountConfig cfg;
 	private final Handler handler = new Handler(this);
-	public static MyAppObserver observer;
+	public MyAppObserver observer;
 
 	MyAccount(AccountConfig config) {
 		super();
