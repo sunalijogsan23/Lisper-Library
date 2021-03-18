@@ -173,14 +173,14 @@ class MyAccount extends Account {
 	@Override
 	public void onRegState(OnRegStateParam prm) {
 		Log.e("tag","onRegState  start");
-		MyApp.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
+		//MyApp.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
 	}
 
 	@Override
 	public void onIncomingCall(OnIncomingCallParam prm) {
 		System.out.println("======== Incoming call ======== ");
 		MyCall call = new MyCall(this, prm.getCallId());
-		MyApp.observer.notifyIncomingCall(call);
+		//MyApp.observer.notifyIncomingCall(call);
 	}
 	
 	@Override
