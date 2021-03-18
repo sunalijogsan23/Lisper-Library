@@ -48,14 +48,14 @@ public class Lisper {
         accCfg.setIdUri(acc_id);
         accCfg.getRegConfig().setRegistrarUri(registrar);
         accCfg.getNatConfig().setIceEnabled(true);
-        account = app.addAcc(accCfg);
+
 
         AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
         creds.clear();
         if (username.length() != 0) {
             creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
-            new AccountSipConfig();
         }
+        account = app.addAcc(accCfg);
         /*StringVector proxies = accCfg.getSipConfig().getProxies();
         proxies.clear();
         if (proxy.length() != 0) {
@@ -64,9 +64,9 @@ public class Lisper {
 
         /* Finally */
         lastRegStatus = "";
-        try {
+        /*try {
             account.modify(accCfg);
-        } catch (Exception e) {}
+        } catch (Exception e) {}*/
     }
 
     public static void MakeCall(String uri) {
