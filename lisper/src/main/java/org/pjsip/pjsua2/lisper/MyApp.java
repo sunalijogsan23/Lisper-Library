@@ -83,7 +83,7 @@ class MyCall extends Call {
 
 	@Override
 	public void onCallState(OnCallStateParam prm) {
-		MyApp.observer.notifyCallState(this);
+		//MyApp.observer.notifyCallState(this);
 		try {
 			CallInfo ci = getInfo();
 			if (ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {

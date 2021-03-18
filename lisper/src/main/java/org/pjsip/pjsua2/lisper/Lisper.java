@@ -40,7 +40,6 @@ public class Lisper {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {}
             }
-
             app.init(activity.getFilesDir().getAbsolutePath());
         }
 
@@ -49,7 +48,6 @@ public class Lisper {
         accCfg.setIdUri(acc_id);
         accCfg.getRegConfig().setRegistrarUri(registrar);
         accCfg.getNatConfig().setIceEnabled(true);
-
 
         AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
         creds.clear();
