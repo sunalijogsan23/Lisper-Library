@@ -18,7 +18,11 @@
  */
 package org.pjsip.pjsua2.lisper;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import org.pjsip.pjsua2.Account;
 import org.pjsip.pjsua2.AccountConfig;
@@ -59,6 +63,8 @@ import org.pjsip.pjsua2.pjsua_call_media_status;
 import java.io.File;
 import java.util.ArrayList;
 
+import static org.pjsip.pjsua2.lisper.Lisper.currentCall;
+
 
 /* Interface to separate UI & engine a bit better */
 interface MyAppObserver {
@@ -84,7 +90,7 @@ class MyCall extends Call {
 
 	@Override
 	public void onCallState(OnCallStateParam prm) {
-		//MyApp.observer.notifyCallState(this);
+		MyApp.observer.notifyCallState(this);
 		try {
 			CallInfo ci = getInfo();
 			if (ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
@@ -129,10 +135,11 @@ class MyCall extends Call {
 }
 
 
-class MyAccount extends Account {
+class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	public ArrayList<MyBuddy> buddyList = new ArrayList<MyBuddy>();
 	public AccountConfig cfg;
-	
+	private final Handler handler = new Handler(this);
+
 	MyAccount(AccountConfig config) {
 		super();
 		cfg = config;
@@ -174,7 +181,7 @@ class MyAccount extends Account {
 	@Override
 	public void onRegState(OnRegStateParam prm) {
 		Log.e("tag","onRegState  start");
-		//MyApp.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
+		MyApp.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
 	}
 
 	@Override
@@ -187,7 +194,7 @@ class MyAccount extends Account {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//MyApp.observer.notifyIncomingCall(call);
+		MyApp.observer.notifyIncomingCall(call);
 	}
 	
 	@Override
@@ -198,6 +205,62 @@ class MyAccount extends Account {
 		System.out.println("Contact		: " + prm.getContactUri());
 		System.out.println("Mimetype	: " + prm.getContentType());
 		System.out.println("Body		: " + prm.getMsgBody());
+	}
+
+	@Override
+	public boolean handleMessage(@NonNull Message msg) {
+		return false;
+	}
+
+	@Override
+	public void notifyRegState(pjsip_status_code code, String reason, int expiration) {
+		Log.e("tag","code---->" + code);
+		String msg_str = "";
+		if (expiration == 0)
+			msg_str += "Unregistration";
+		else
+			msg_str += "Registration";
+
+		if (code.swigValue()/100 == 2)
+			msg_str += " successful";
+		else
+			msg_str += " failed: " + reason;
+
+		Message m = Message.obtain(handler, Lisper.MSG_TYPE.REG_STATE, msg_str);
+		m.sendToTarget();
+	}
+
+	@Override
+	public void notifyIncomingCall(MyCall call) {
+		Message m = Message.obtain(handler, Lisper.MSG_TYPE.INCOMING_CALL, call);
+		m.sendToTarget();
+	}
+
+	@Override
+	public void notifyCallState(MyCall call) {
+		if (currentCall == null || call.getId() != currentCall.getId())
+			return;
+
+		CallInfo ci;
+		try {
+			ci = call.getInfo();
+		} catch (Exception e) {
+			ci = null;
+		}
+		Message m = Message.obtain(handler, Lisper.MSG_TYPE.CALL_STATE, ci);
+		m.sendToTarget();
+
+		if (ci != null &&
+				ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED)
+		{
+			currentCall = null;
+		}
+	}
+
+	@Override
+	public void notifyBuddyState(MyBuddy buddy) {
+		Message m = Message.obtain(handler, Lisper.MSG_TYPE.BUDDY_STATE, buddy);
+		m.sendToTarget();
 	}
 }
 

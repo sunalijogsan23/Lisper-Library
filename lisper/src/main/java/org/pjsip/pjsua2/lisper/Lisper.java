@@ -114,26 +114,28 @@ public class Lisper {
         return false;
     }
 
-    public static void acceptCall() {
+    public static void acceptCall(Message m) {
+        final MyCall call = (MyCall) m.obj;
         CallOpParam prm = new CallOpParam();
         prm.setStatusCode(pjsip_status_code.PJSIP_SC_OK);
         try {
-            currentCall.answer(prm);
+            call.answer(prm);
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("answercall"+e);
         }
 
     }
 
-    public static void hangupCall() {
+    public static void hangupCall(Message m) {
 
         if (currentCall != null) {
+            final MyCall call = (MyCall) m.obj;
             CallOpParam prm = new CallOpParam();
             prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
             try {
-                currentCall.hangup(prm);
+                call.hangup(prm);
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println("hangupcall"+e);
             }
         }
     }
