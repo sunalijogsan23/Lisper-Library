@@ -55,7 +55,7 @@ public class Lisper {
         if (username.length() != 0) {
             creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
         }
-        account = app.addAcc(accCfg);
+        //account = app.addAcc(accCfg);
         /*StringVector proxies = accCfg.getSipConfig().getProxies();
         proxies.clear();
         if (proxy.length() != 0) {
