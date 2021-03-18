@@ -25,6 +25,9 @@ public class Lisper {
     }
 
     public static void Account_Regi(String acc_id,String registrar,String username, String password){
+        System.loadLibrary("pjsua2");
+        System.out.println("pjsip============================> Library loadedAccount");
+
         accCfg = new AccountConfig();
         accCfg.setIdUri(acc_id);
         accCfg.getRegConfig().setRegistrarUri(registrar);
