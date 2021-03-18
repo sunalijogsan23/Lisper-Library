@@ -64,28 +64,16 @@ public class Lisper {
             e.printStackTrace();
             account = null;
         }
-        /*StringVector proxies = accCfg.getSipConfig().getProxies();
-        proxies.clear();
-        if (proxy.length() != 0) {
-            proxies.add(proxy);
-        }*/
-
-        /* Finally */
-        lastRegStatus = "";
-        /*try {
-            account.modify(accCfg);
-        } catch (Exception e) {}*/
     }
 
     public static void MakeCall(String uri) {
 
+        Log.e("acc",account.toString());
         if (currentCall != null) {
             return;
         }
 
-        String buddy_uri = uri;
-
-        Log.e("TAG","buddy_uri---->" + buddy_uri);
+        Log.e("TAG","buddy_uri---->" + uri);
         MyCall call = new MyCall(account, -1);
         CallOpParam prm = new CallOpParam();
         CallSetting opt = prm.getOpt();
@@ -93,7 +81,7 @@ public class Lisper {
         opt.setVideoCount(0);
 
         try {
-            call.makeCall(buddy_uri, prm);
+            call.makeCall(uri, prm);
         } catch (Exception e) {
             call.delete();
             return;
