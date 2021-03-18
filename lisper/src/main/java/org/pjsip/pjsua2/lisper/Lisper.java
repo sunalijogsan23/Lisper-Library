@@ -1,5 +1,7 @@
 package org.pjsip.pjsua2.lisper;
 
+import android.app.Activity;
+import android.content.pm.ApplicationInfo;
 import android.util.Log;
 
 import org.pjsip.pjsua2.AccountConfig;
@@ -17,6 +19,7 @@ public class Lisper {
     public static AccountConfig accCfg = null;
     public static String lastRegStatus = "";
 
+
     public class MSG_TYPE {
         public final static int INCOMING_CALL = 1;
         public final static int CALL_STATE = 2;
@@ -24,9 +27,21 @@ public class Lisper {
         public final static int BUDDY_STATE = 4;
     }
 
-    public static void Account_Regi(String acc_id,String registrar,String username, String password){
+    public static void Account_Regi(String acc_id,String registrar,String username, String password, Activity activity){
         System.loadLibrary("pjsua2");
         System.out.println("pjsip============================> Library loadedAccount");
+
+        if (app == null) {
+            app = new MyApp();
+            /* Wait for GDB to init */
+            if ((activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {}
+            }
+
+            app.init(activity.getFilesDir().getAbsolutePath());
+        }
 
         app = new MyApp();
         accCfg = new AccountConfig();

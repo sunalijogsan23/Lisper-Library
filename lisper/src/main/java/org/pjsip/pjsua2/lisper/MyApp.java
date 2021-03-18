@@ -289,12 +289,12 @@ class MyApp {
 	private final int SIP_PORT  = 6000;
 	private final int LOG_LEVEL = 4;
 	
-	public void init(MyAppObserver obs, String app_dir) {
-		init(obs, app_dir, false);
+	public void init(String app_dir) {
+		init(app_dir, false);
 	}
 	
-	public void init(MyAppObserver obs, String app_dir, boolean own_worker_thread) {
-		observer = obs;
+	public void init(String app_dir, boolean own_worker_thread) {
+		///observer = obs;
 		appDir = app_dir;
 		
 		/* Create endpoint */
