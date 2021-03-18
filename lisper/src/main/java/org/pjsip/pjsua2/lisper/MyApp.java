@@ -303,8 +303,7 @@ class MyApp {
 		} catch (Exception e) {
 			return;
 		}
-			
-		
+
 		/* Load config */
 		String configPath = appDir + "/" + configName;
 		File f = new File(configPath);
@@ -359,18 +358,18 @@ class MyApp {
 		}
 		
 		/* Create accounts. */
-		for (int i = 0; i < accCfgs.size(); i++) {
+		/*for (int i = 0; i < accCfgs.size(); i++) {
 			MyAccountConfig my_cfg = accCfgs.get(i);
 			MyAccount acc = addAcc(my_cfg.accCfg);
 			if (acc == null)
 				continue;
 			
-			/* Add Buddies */
+			*//* Add Buddies *//*
 			for (int j = 0; j < my_cfg.buddyCfgs.size(); j++) {
 				BuddyConfig bud_cfg = my_cfg.buddyCfgs.get(j);
 				acc.addBuddy(bud_cfg);
 			}
-		}
+		}*/
 
 		/* Start. */
 		try {
