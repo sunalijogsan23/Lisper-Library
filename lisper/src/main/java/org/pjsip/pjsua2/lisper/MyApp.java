@@ -139,11 +139,16 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	public ArrayList<MyBuddy> buddyList = new ArrayList<MyBuddy>();
 	public AccountConfig cfg;
 	private final Handler handler = new Handler(this);
-	//public MyAppObserver observer;
+	public MyAppObserver observer;
 
 	MyAccount(AccountConfig config) {
 		super();
 		cfg = config;
+	}
+
+	MyAccount(MyAppObserver myAppOobserver){
+		super();
+		observer = myAppOobserver;
 	}
 	
 	public MyBuddy addBuddy(BuddyConfig bud_cfg)
@@ -179,7 +184,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 		bud.delete();
 	}
 
-	MyAccount obj = new MyAccount(cfg);
+	MyAccount obj = new MyAccount(observer);
 	@Override
 	public void onRegState(OnRegStateParam prm) {
 		Log.e("tag","onRegState  start");
@@ -362,12 +367,12 @@ class MyApp {
 	private final int SIP_PORT  = 6000;
 	private final int LOG_LEVEL = 4;
 	
-	public void init(String app_dir) {
-		init(app_dir, false);
+	public void init(MyAppObserver obs,String app_dir) {
+		init(obs,app_dir, false);
 	}
 	
-	public void init(String app_dir, boolean own_worker_thread) {
-		///observer = obs;
+	public void init(MyAppObserver obs,String app_dir, boolean own_worker_thread) {
+		observer = obs;
 		appDir = app_dir;
 		
 		/* Create endpoint */

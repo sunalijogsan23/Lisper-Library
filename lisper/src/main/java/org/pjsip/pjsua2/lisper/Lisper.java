@@ -27,7 +27,7 @@ public class Lisper {
         public final static int BUDDY_STATE = 4;
     }
 
-    public static void Account_Regi(String acc_id,String registrar,String username, String password, Activity activity){
+    public void Account_Regi(String acc_id, String registrar, String username, String password, Activity activity){
         System.loadLibrary("pjsua2");
         System.out.println("pjsip============================> Library loadedAccount");
 
@@ -39,7 +39,7 @@ public class Lisper {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {}
             }
-            app.init(activity.getFilesDir().getAbsolutePath());
+            app.init((MyAppObserver)this,activity.getFilesDir().getAbsolutePath());
         }
 
         app = new MyApp();
