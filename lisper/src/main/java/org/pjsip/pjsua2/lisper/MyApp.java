@@ -380,6 +380,26 @@ class MyApp {
 		observer = new Lisper.StatusObs() {
 			@Override
 			public void notifyRegState(pjsip_status_code code, String reason, int expiration) {
+				Log.e("tag","code---->" + code);
+				String msg_str = "";
+				if (expiration == 0){
+					msg_str += "Unregistration";
+					Lisper.LISPER_SC_OK = false;
+				}
+				else{
+					msg_str += "Registration";
+					Lisper.LISPER_SC_OK = true;
+				}
+
+
+				if (code.swigValue()/100 == 2){
+					msg_str += " successful";
+					Lisper.LISPER_SC_OK = true;
+				}
+				else{
+					msg_str += " failed: " + reason;
+					Lisper.LISPER_SC_OK = false;
+				}
 
 			}
 

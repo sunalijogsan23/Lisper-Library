@@ -20,7 +20,6 @@ public class Lisper {
     public static String lastRegStatus = "";
     public static boolean LISPER_SC_OK = false;
 
-
     public class MSG_TYPE {
         public final static int INCOMING_CALL = 1;
         public final static int CALL_STATE = 2;
@@ -28,7 +27,7 @@ public class Lisper {
         public final static int BUDDY_STATE = 4;
     }
 
-    public static void Account_Regi(String acc_id,String registrar,String username, String password, Activity activity){
+    public static boolean Account_Regi(String acc_id, String registrar, String username, String password, Activity activity){
         System.loadLibrary("pjsua2");
         System.out.println("pjsip============================> Library loadedAccount");
 
@@ -62,6 +61,8 @@ public class Lisper {
             e.printStackTrace();
             account = null;
         }
+
+        return LISPER_SC_OK;
     }
 
     public static void MakeCall(String uri) {
