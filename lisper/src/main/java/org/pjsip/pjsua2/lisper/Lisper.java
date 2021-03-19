@@ -150,7 +150,6 @@ public class Lisper {
         public void notifyRegState(pjsip_status_code code, String reason, int expiration);
         public void notifyIncomingCall(MyCall call);
         public void notifyCallState(MyCall call);
-        public void notifyBuddyState(MyBuddy buddy);
     }
 
     /*public void notifyIncomingCall(MyCall call) {
