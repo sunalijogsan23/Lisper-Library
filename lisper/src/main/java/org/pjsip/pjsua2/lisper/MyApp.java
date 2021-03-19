@@ -90,7 +90,7 @@ class MyCall extends Call {
 
 	@Override
 	public void onCallState(OnCallStateParam prm) {
-		MyApp.observer.notifyCallState(this);
+		MyAccount.observer.notifyCallState(this);
 		try {
 			CallInfo ci = getInfo();
 			if (ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
@@ -139,11 +139,47 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	public ArrayList<MyBuddy> buddyList = new ArrayList<MyBuddy>();
 	public AccountConfig cfg;
 	private final Handler handler = new Handler(this);
+	public static MyAppObserver observer = new MyAppObserver() {
+		@Override
+		public void notifyRegState(pjsip_status_code code, String reason, int expiration) {
+			Log.e("tag","code---->" + code);
+			String msg_str = "";
+			if (expiration == 0)
+				msg_str += "Unregistration";
+			else
+				msg_str += "Registration";
+
+			if (code.swigValue()/100 == 2)
+				msg_str += " successful";
+			else
+				msg_str += " failed: " + reason;
+
+			Log.e("msg_reg",msg_str);
+			/*Message m = Message.obtain(handler, Lisper.MSG_TYPE.REG_STATE, msg_str);
+			m.sendToTarget();*/
+		}
+
+		@Override
+		public void notifyIncomingCall(MyCall call) {
+
+		}
+
+		@Override
+		public void notifyCallState(MyCall call) {
+
+		}
+
+		@Override
+		public void notifyBuddyState(MyBuddy buddy) {
+
+		}
+	};
 
 	MyAccount(AccountConfig config) {
 		super();
 		cfg = config;
 	}
+
 
 	public MyBuddy addBuddy(BuddyConfig bud_cfg)
 	{
@@ -182,7 +218,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	public void onRegState(OnRegStateParam prm) {
 		Log.e("tag","onRegState  start");
 		Log.e("prm_reg",prm.toString());
-		MyApp.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
+		observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
 	}
 
 	@Override
@@ -195,7 +231,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		MyApp.observer.notifyIncomingCall(call);
+		observer.notifyIncomingCall(call);
 	}
 	
 	@Override
@@ -360,12 +396,12 @@ class MyApp {
 	private final int SIP_PORT  = 6000;
 	private final int LOG_LEVEL = 4;
 	
-	public void init(MyAppObserver obs,String app_dir) {
-		init(obs,app_dir, false);
+	public void init(String app_dir) {
+		init(app_dir, false);
 	}
 	
-	public void init(MyAppObserver obs,String app_dir, boolean own_worker_thread) {
-		observer = obs;
+	public void init(String app_dir, boolean own_worker_thread) {
+		///observer = obs;
 		appDir = app_dir;
 		
 		/* Create endpoint */
