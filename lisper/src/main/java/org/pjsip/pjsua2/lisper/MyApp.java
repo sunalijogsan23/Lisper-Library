@@ -139,6 +139,52 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	public ArrayList<MyBuddy> buddyList = new ArrayList<MyBuddy>();
 	public AccountConfig cfg;
 	private final Handler handler = new Handler(this);
+	Lisper.StatusObs obs = new Lisper.StatusObs() {
+		@Override
+		public void notifyRegState(pjsip_status_code code, String reason, int expiration) {
+			Log.e("tag","code---->" + code);
+			String msg_str = "";
+			if (expiration == 0){
+				msg_str += "Unregistration";
+				Lisper.LISPER_SC_OK = false;
+			}
+			else
+			{
+				msg_str += "Registration";
+				Lisper.LISPER_SC_OK = true;
+			}
+
+			if (code.swigValue()/100 == 2){
+				msg_str += " successful";
+				Lisper.LISPER_SC_OK = true;
+			}
+			else{
+				msg_str += " failed: " + reason;
+				Lisper.LISPER_SC_OK = false;
+			}
+
+			Log.e("msg_reg",msg_str);
+			Log.e("lisper_reg", String.valueOf(Lisper.LISPER_SC_OK));
+			/*Message m = Message.obtain(handler, Lisper.MSG_TYPE.REG_STATE, msg_str);
+			m.sendToTarget();*/
+		}
+
+		@Override
+		public void notifyIncomingCall(MyCall call) {
+
+		}
+
+		@Override
+		public void notifyCallState(MyCall call) {
+
+		}
+
+		@Override
+		public void notifyBuddyState(MyBuddy buddy) {
+
+		}
+	};
+
 	public static MyAppObserver observer = new MyAppObserver() {
 		@Override
 		public void notifyRegState(pjsip_status_code code, String reason, int expiration) {
@@ -229,6 +275,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 		Log.e("tag","onRegState  start");
 		Log.e("prm_reg",prm.toString());
 		observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
+		obs.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
 	}
 
 	@Override
@@ -242,6 +289,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 			e.printStackTrace();
 		}
 		observer.notifyIncomingCall(call);
+		obs.notifyIncomingCall(call);
 	}
 	
 	@Override

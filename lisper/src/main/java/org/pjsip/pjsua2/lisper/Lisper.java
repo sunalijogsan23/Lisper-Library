@@ -37,7 +37,7 @@ public class Lisper {
             /* Wait for GDB to init */
             if ((activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {}
             }
             app.init(activity.getFilesDir().getAbsolutePath());
@@ -144,6 +144,13 @@ public class Lisper {
     public static void getAccInfo(){
         String info = accCfg.getIdUri() + ", " + accCfg.getRegConfig().getRegistrarUri();
         Log.e("Info",info);
+    }
+
+    public interface StatusObs{
+        public void notifyRegState(pjsip_status_code code, String reason, int expiration);
+        public void notifyIncomingCall(MyCall call);
+        public void notifyCallState(MyCall call);
+        public void notifyBuddyState(MyBuddy buddy);
     }
 
     /*public void notifyIncomingCall(MyCall call) {
