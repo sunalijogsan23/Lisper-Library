@@ -18,6 +18,7 @@ public class Lisper {
     public static MyAccount account = null;
     public static AccountConfig accCfg = null;
     public static String lastRegStatus = "";
+    public static boolean LISPER_SC_OK = false;
 
 
     public class MSG_TYPE {

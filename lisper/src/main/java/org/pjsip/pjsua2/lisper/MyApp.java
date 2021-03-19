@@ -144,17 +144,27 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 		public void notifyRegState(pjsip_status_code code, String reason, int expiration) {
 			Log.e("tag","code---->" + code);
 			String msg_str = "";
-			if (expiration == 0)
+			if (expiration == 0){
 				msg_str += "Unregistration";
+				Lisper.LISPER_SC_OK = false;
+			}
 			else
+			{
 				msg_str += "Registration";
+				Lisper.LISPER_SC_OK = true;
+			}
 
-			if (code.swigValue()/100 == 2)
+			if (code.swigValue()/100 == 2){
 				msg_str += " successful";
-			else
+				Lisper.LISPER_SC_OK = true;
+			}
+			else{
 				msg_str += " failed: " + reason;
+				Lisper.LISPER_SC_OK = false;
+			}
 
 			Log.e("msg_reg",msg_str);
+			Log.e("lisper_reg", String.valueOf(Lisper.LISPER_SC_OK));
 			/*Message m = Message.obtain(handler, Lisper.MSG_TYPE.REG_STATE, msg_str);
 			m.sendToTarget();*/
 		}
