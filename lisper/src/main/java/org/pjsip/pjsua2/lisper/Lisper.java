@@ -40,7 +40,7 @@ public class Lisper {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {}
             }
-            app.init(activity.getFilesDir().getAbsolutePath());
+            app.init((MyAppObserver)activity,activity.getFilesDir().getAbsolutePath());
         }
 
         app = new MyApp();
@@ -147,7 +147,7 @@ public class Lisper {
     }
 
     public interface StatusObs{
-        public void notifyRegState(pjsip_status_code code, String reason, int expiration);
+        void notifyRegState(pjsip_status_code code, String reason, int expiration);
         public void notifyIncomingCall(MyCall call);
         public void notifyCallState(MyCall call);
     }
