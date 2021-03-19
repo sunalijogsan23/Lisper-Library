@@ -66,12 +66,12 @@ import java.util.ArrayList;
 import static org.pjsip.pjsua2.lisper.Lisper.currentCall;
 
 
-/* Interface to separate UI & engine a bit better */
+// Interface to separate UI & engine a bit better
 interface MyAppObserver {
-	abstract void notifyRegState(pjsip_status_code code, String reason, int expiration);
-	abstract void notifyIncomingCall(MyCall call);
-	abstract void notifyCallState(MyCall call);
-	abstract void notifyBuddyState(MyBuddy buddy);
+	public void notifyRegState(pjsip_status_code code, String reason, int expiration);
+	public void notifyIncomingCall(MyCall call);
+	public void notifyCallState(MyCall call);
+	public void notifyBuddyState(MyBuddy buddy);
 }
 
 
@@ -139,7 +139,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	public ArrayList<MyBuddy> buddyList = new ArrayList<MyBuddy>();
 	public AccountConfig cfg;
 	private final Handler handler = new Handler(this);
-	public MyAppObserver observer;
+	//public MyAppObserver observer;
 
 	MyAccount(AccountConfig config) {
 		super();
@@ -178,11 +178,13 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 		buddyList.remove(index);
 		bud.delete();
 	}
-	
+
+	MyAccount obj = new MyAccount(cfg);
 	@Override
 	public void onRegState(OnRegStateParam prm) {
 		Log.e("tag","onRegState  start");
-		observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
+		Log.e("prm_reg",prm.toString());
+		obj.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
 	}
 
 	@Override
@@ -195,7 +197,7 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		observer.notifyIncomingCall(call);
+		obj.notifyIncomingCall(call);
 	}
 	
 	@Override
