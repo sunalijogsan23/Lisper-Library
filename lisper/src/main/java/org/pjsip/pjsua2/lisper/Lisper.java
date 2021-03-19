@@ -40,7 +40,7 @@ public class Lisper {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {}
             }
-            app.init((MyAppObserver)activity,activity.getFilesDir().getAbsolutePath());
+            app.init(activity.getFilesDir().getAbsolutePath());
         }
 
         app = new MyApp();
