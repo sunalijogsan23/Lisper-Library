@@ -400,8 +400,8 @@ class MyApp {
 					Lisper.LISPER_SC_OK = false;
 				}
 
-				String finalMsg_str = msg_str;
-				new AlertDialog.Builder(Lisper.context)
+				//String finalMsg_str = msg_str;
+				/*new AlertDialog.Builder(Lisper.context)
 						.setTitle("Your Alert")
 						.setMessage("Your Message")
 						.setCancelable(false)
@@ -412,7 +412,7 @@ class MyApp {
 								// Whatever...
 								//Lisper.acceptCall();
 							}
-						}).show();
+						}).show();*/
 			}
 
 			@Override
