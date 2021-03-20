@@ -18,7 +18,9 @@
  */
 package org.lintel.lisper;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -417,18 +419,7 @@ class MyApp {
 
 			@Override
 			public void notifyIncomingCall(MyCall call) {
-				new AlertDialog.Builder(Lisper.context)
-						.setTitle("Your Alert")
-						.setMessage("Your Message")
-						.setCancelable(false)
-						.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								Toast.makeText(Lisper.context, "Incoming call",Toast.LENGTH_LONG).show();
-								// Whatever...
-								//Lisper.acceptCall();
-							}
-						}).show();
+				Lisper.context.startActivity(new Intent(Lisper.context,CallingActivity.class));
 			}
 
 			@Override
@@ -576,5 +567,11 @@ class MyApp {
 		 */
 		ep.delete();
 		ep = null;
-	} 
+	}
+
+	private void showCallActivity(Activity activity) {
+		Intent intent = new Intent(activity.getApplication(), CallingActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		activity.getApplication().startActivity(intent);
+	}
 }
