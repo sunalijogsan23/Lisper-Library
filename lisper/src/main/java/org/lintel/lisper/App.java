@@ -1,4 +1,4 @@
-package org.pjsip.pjsua2.lisper;
+package org.lintel.lisper;
 
 import android.app.Application;
 

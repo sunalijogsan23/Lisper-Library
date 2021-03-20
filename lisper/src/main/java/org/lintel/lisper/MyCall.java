@@ -1,4 +1,4 @@
-package org.pjsip.pjsua2.lisper;
+package org.lintel.lisper;
 
 import org.pjsip.pjsua2.AudioMedia;
 import org.pjsip.pjsua2.Call;

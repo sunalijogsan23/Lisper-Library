@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package org.pjsip.pjsua2.lisper;
+package org.lintel.lisper;
 
 import android.os.Handler;
 import android.os.Message;
@@ -63,7 +63,7 @@ import org.pjsip.pjsua2.pjsua_call_media_status;
 import java.io.File;
 import java.util.ArrayList;
 
-import static org.pjsip.pjsua2.lisper.Lisper.currentCall;
+import static org.lintel.lisper.Lisper.currentCall;
 
 
 // Interface to separate UI & engine a bit better
