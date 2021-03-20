@@ -93,7 +93,6 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 		cfg = config;
 	}
 
-
 	public MyBuddy addBuddy(BuddyConfig bud_cfg)
 	{
 		/* Create Buddy */
@@ -390,7 +389,6 @@ class MyApp {
 					msg_str += "Registration";
 					Lisper.LISPER_SC_OK = true;
 				}
-
 
 				if (code.swigValue()/100 == 2){
 					msg_str += " successful";
