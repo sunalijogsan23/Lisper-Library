@@ -1,6 +1,7 @@
 package org.lintel.lisper;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Message;
 import android.util.Log;
@@ -17,7 +18,8 @@ public class Lisper {
     public static MyCall currentCall = null;
     public static MyAccount account = null;
     public static AccountConfig accCfg = null;
-    public static String lastRegStatus = "";
+    public static String sip_port = "";
+    public static Context context;
     public static boolean LISPER_SC_OK = false;
 
     public class MSG_TYPE {
@@ -27,7 +29,8 @@ public class Lisper {
         public final static int BUDDY_STATE = 4;
     }
 
-    public static boolean Account_Regi(String acc_id, String registrar, String username, String password, Activity activity){
+    public static void Account_Regi(String username, String password,String server_url,String port, Activity activity){
+        context = activity.getApplicationContext();
         System.loadLibrary("pjsua2");
         System.out.println("pjsip============================> Library loadedAccount");
 
@@ -42,10 +45,11 @@ public class Lisper {
             app.init(activity.getFilesDir().getAbsolutePath());
         }
 
+        sip_port = port;
         app = new MyApp();
         accCfg = new AccountConfig();
-        accCfg.setIdUri(acc_id);
-        accCfg.getRegConfig().setRegistrarUri(registrar);
+        accCfg.setIdUri("sip:" + username + "@" + server_url);
+        accCfg.getRegConfig().setRegistrarUri("sip:"+server_url);
         accCfg.getNatConfig().setIceEnabled(true);
 
         AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
@@ -54,15 +58,14 @@ public class Lisper {
             creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
         }
         account = new MyAccount(accCfg);
-        //account = app.addAcc(accCfg);
-        try {
+        account = app.addAcc(accCfg);
+        /*try {
             account.create(accCfg);
         } catch (Exception e) {
             e.printStackTrace();
             account = null;
-        }
+        }*/
 
-        return LISPER_SC_OK;
     }
 
     public static void MakeCall(String uri) {

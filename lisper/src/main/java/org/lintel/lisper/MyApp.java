@@ -18,11 +18,14 @@
  */
 package org.lintel.lisper;
 
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import org.pjsip.pjsua2.Account;
 import org.pjsip.pjsua2.AccountConfig;
@@ -74,14 +77,12 @@ interface MyAppObserver {
 	public void notifyBuddyState(MyBuddy buddy);
 }
 
-
 class MyLogWriter extends LogWriter {
 	@Override
 	public void write(LogEntry entry) {
 		System.out.println(entry.getMsg());
 	}
 }
-
 
 class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 	public ArrayList<MyBuddy> buddyList = new ArrayList<MyBuddy>();
@@ -305,9 +306,9 @@ class MyApp {
 	private MyLogWriter logWriter;
 
 	private final String configName = "pjsua2.json";
-	private final int SIP_PORT  = 6000;
+	private final int SIP_PORT  = Integer.parseInt(Lisper.sip_port);
 	private final int LOG_LEVEL = 4;
-	
+
 	public void init(String app_dir) {
 		init(app_dir, false);
 	}
@@ -347,7 +348,7 @@ class MyApp {
 		
 		/* Set ua config. */
 		UaConfig ua_cfg = epConfig.getUaConfig();
-		ua_cfg.setUserAgent("Pjsua2 Android " + ep.libVersion().getFull());
+		ua_cfg.setUserAgent("Lisper Android " + ep.libVersion().getFull());
 		StringVector stun_servers = new StringVector();
 		stun_servers.add("stun.pjsip.org");
 		ua_cfg.setStunServer(stun_servers);
@@ -399,6 +400,19 @@ class MyApp {
 					Lisper.LISPER_SC_OK = false;
 				}
 
+				String finalMsg_str = msg_str;
+				new AlertDialog.Builder(Lisper.context)
+						.setTitle("Your Alert")
+						.setMessage("Your Message")
+						.setCancelable(false)
+						.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								Toast.makeText(Lisper.context, finalMsg_str,Toast.LENGTH_LONG).show();
+								// Whatever...
+								//Lisper.acceptCall();
+							}
+						}).show();
 			}
 
 			@Override
