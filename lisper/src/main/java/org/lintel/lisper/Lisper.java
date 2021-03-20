@@ -31,6 +31,7 @@ public class Lisper {
 
     public static void Account_Regi(String username, String password,String server_url,String port, Activity activity){
         context = activity.getApplicationContext();
+        sip_port = port;
         System.loadLibrary("pjsua2");
         System.out.println("pjsip============================> Library loadedAccount");
 
@@ -45,7 +46,6 @@ public class Lisper {
             app.init(activity.getFilesDir().getAbsolutePath());
         }
 
-        sip_port = port;
         app = new MyApp();
         accCfg = new AccountConfig();
         accCfg.setIdUri("sip:" + username + "@" + server_url);
