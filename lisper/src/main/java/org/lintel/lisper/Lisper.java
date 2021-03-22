@@ -73,22 +73,25 @@ public class Lisper{
         public final static int BUDDY_STATE = 4;
     }
 
-    public static void Account_Regi(String username, String password,String server_url,String port, Activity activity){
-        context = activity.getApplicationContext();
-        sip_port = port;
+    public static void InitLisper(Activity activity){
         System.loadLibrary("pjsua2");
         System.out.println("pjsip============================> Library loadedAccount");
 
         if (app == null) {
             app = new MyLisper();
             /* Wait for GDB to init */
-            /*if ((activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+            if ((activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {}
-            }*/
+            }
             app.init(activity.getFilesDir().getAbsolutePath());
         }
+    }
+
+    public static void Account_Regi(String username, String password,String server_url,String port, Activity activity){
+        context = activity.getApplicationContext();
+        sip_port = port;
 
         app = new MyLisper();
         accCfg = new AccountConfig();
