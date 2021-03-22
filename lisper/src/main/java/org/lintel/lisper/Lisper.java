@@ -73,10 +73,11 @@ public class Lisper{
         public final static int BUDDY_STATE = 4;
     }
 
-    public static void InitLisper(Activity activity){
+    public static void InitLisper(Activity activity,String port){
         System.loadLibrary("pjsua2");
         System.out.println("pjsip============================> Library loadedAccount");
 
+        sip_port = port;
         if (app == null) {
             app = new MyLisper();
             /* Wait for GDB to init */
@@ -89,9 +90,8 @@ public class Lisper{
         }
     }
 
-    public static void Account_Regi(String username, String password,String server_url,String port, Activity activity){
+    public static void Account_Regi(String username, String password,String server_url,Activity activity){
         context = activity.getApplicationContext();
-        sip_port = port;
 
         app = new MyLisper();
         accCfg = new AccountConfig();
