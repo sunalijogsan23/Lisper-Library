@@ -3,10 +3,8 @@ package org.lintel.lisper;
 import android.util.Log;
 
 import org.pjsip.pjsua2.OnRegStateParam;
+import org.pjsip.pjsua2.pjsip_status_code;
 
 public interface HandleStatus {
-    static void onRegState(OnRegStateParam prm) {
-        Log.e("tag","onRegState_1  start");
-        Log.e("prm_reg_1",prm.toString());
-    }
+    void onRegState(pjsip_status_code code, String reason, int expiration);
 }

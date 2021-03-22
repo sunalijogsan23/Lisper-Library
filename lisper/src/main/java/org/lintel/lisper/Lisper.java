@@ -187,24 +187,44 @@ public class Lisper{
         Log.e("Info",info);
     }
 
+    public static void addCallback(RegistrationCallback registrationCallback,
+                                   PhoneCallback phoneCallback) {
+        LisperAccount.addRegistrationCallback(registrationCallback);
+    }
 }
 
 class LisperAccount extends Account {
     public AccountConfig cfg;
+    HandleStatus handleStatuss = null;
+    public static PhoneCallback sPhoneCallback;
+    public static RegistrationCallback sRegistrationCallback;
+
+    public static void addRegistrationCallback(RegistrationCallback registrationCallback) {
+        sRegistrationCallback = registrationCallback;
+    }
 
     LisperAccount(AccountConfig config) {
         super();
         cfg = config;
     }
 
+    LisperAccount(HandleStatus handleStatus){
+        handleStatuss = handleStatus;
+    }
+
     @Override
     public void onRegState(OnRegStateParam prm) {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         Log.e("tag","onRegState  start");
         Log.e("prm_reg",prm.toString());
-        HandleStatus.onRegState(prm);
+        handleStatuss.onRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
         MyLisper.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
+
+        String state = prm.getCode().toString();
+        if (state.equals("PJSIP_SC_OK")) {
+            sRegistrationCallback.registrationOk();
+        } else{
+            sRegistrationCallback.registrationFailed();
+        }
     }
 
     @Override
