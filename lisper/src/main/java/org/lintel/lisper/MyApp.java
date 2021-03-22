@@ -21,6 +21,7 @@ package org.lintel.lisper;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -134,6 +135,8 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 		Log.e("tag","onRegState  start");
 		Log.e("prm_reg",prm.toString());
 		MyApp.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
 	}
 
 	@Override
@@ -419,7 +422,7 @@ class MyApp {
 
 			@Override
 			public void notifyIncomingCall(MyCall call) {
-				Lisper.context.startActivity(new Intent(Lisper.context,CallingActivity.class));
+
 			}
 
 			@Override
@@ -569,9 +572,4 @@ class MyApp {
 		ep = null;
 	}
 
-	private void showCallActivity(Activity activity) {
-		Intent intent = new Intent(activity.getApplication(), CallingActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		activity.getApplication().startActivity(intent);
-	}
 }

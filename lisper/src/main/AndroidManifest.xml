@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.pjsip.pjsua2">
 
-    <application android:name="org.lintel.lisper.App">
-        <activity android:name="org.lintel.lisper.CallingActivity"></activity>
-    </application>
+    <application android:name="org.lintel.lisper.App"></application>
 
 </manifest>
