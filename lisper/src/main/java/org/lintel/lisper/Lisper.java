@@ -73,6 +73,13 @@ public class Lisper{
         public final static int BUDDY_STATE = 4;
     }
 
+    public static class Status{
+        public static void onRegState(OnRegStateParam prm) {
+            Log.e("tag","onRegState_1  start");
+            Log.e("prm_reg_1",prm.toString());
+        }
+    }
+
     public static void Account_Regi(String username, String password,String server_url,String port, Activity activity){
         context = activity.getApplicationContext();
         sip_port = port;
@@ -203,7 +210,7 @@ class LisperAccount extends Account {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         Log.e("tag","onRegState  start");
         Log.e("prm_reg",prm.toString());
-        Status.onRegState(prm);
+        Lisper.Status.onRegState(prm);
         MyLisper.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
     }
 
@@ -230,13 +237,6 @@ class LisperAccount extends Account {
         System.out.println("Body		: " + prm.getMsgBody());
     }
 
-}
-
-class Status{
-    public static void onRegState(OnRegStateParam prm) {
-        Log.e("tag","onRegState_1  start");
-        Log.e("prm_reg_1",prm.toString());
-    }
 }
 
 class LisperCall extends Call{
