@@ -195,7 +195,6 @@ public class Lisper{
 
 class LisperAccount extends Account {
     public AccountConfig cfg;
-    HandleStatus handleStatuss = null;
     public static PhoneCallback sPhoneCallback;
     public static RegistrationCallback sRegistrationCallback;
 
@@ -208,15 +207,11 @@ class LisperAccount extends Account {
         cfg = config;
     }
 
-    LisperAccount(HandleStatus handleStatus){
-        handleStatuss = handleStatus;
-    }
-
     @Override
     public void onRegState(OnRegStateParam prm) {
         Log.e("tag","onRegState  start");
         Log.e("prm_reg",prm.toString());
-        handleStatuss.onRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
+        //handleStatuss.onRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
         MyLisper.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
 
         String state = prm.getCode().toString();
