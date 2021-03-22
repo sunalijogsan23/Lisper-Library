@@ -82,11 +82,11 @@ public class Lisper{
         if (app == null) {
             app = new MyLisper();
             /* Wait for GDB to init */
-            if ((activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+            /*if ((activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {}
-            }
+            }*/
             app.init(activity.getFilesDir().getAbsolutePath());
         }
 
