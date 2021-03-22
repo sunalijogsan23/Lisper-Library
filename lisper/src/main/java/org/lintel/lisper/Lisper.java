@@ -43,6 +43,7 @@ import org.pjsip.pjsua2.pjmedia_type;
 import org.pjsip.pjsua2.pjsip_inv_state;
 import org.pjsip.pjsua2.pjsip_status_code;
 import org.pjsip.pjsua2.pjsip_transport_type_e;
+import org.pjsip.pjsua2.pjsua2JNI;
 import org.pjsip.pjsua2.pjsua_call_media_status;
 
 import java.io.File;
@@ -56,7 +57,7 @@ interface LisperObserver {
     public void notifyCallState(LisperCall call);
 }
 
-public class Lisper extends Account {
+public class Lisper{
     public static MyLisper app = null;
     public static LisperCall currentCall = null;
     public static LisperAccount account = null;
@@ -186,38 +187,6 @@ public class Lisper extends Account {
         Log.e("Info",info);
     }
 
-    @Override
-    public void onRegState(OnRegStateParam prm) {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        Log.e("tag","onRegState  start");
-        Log.e("prm_reg",prm.toString());
-        MyLisper.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
-    }
-
-    @Override
-    public void onIncomingCall(OnIncomingCallParam prm) {
-        System.out.println("======== Incoming call ======== ");
-       /* MyCall call = new MyCall(this, prm.getCallId());
-        try {
-            CallSetting setting = call.getInfo().getSetting();
-            Log.d(" Log APP ", "onIncomingCall: Audio " + setting.getAudioCount() + "  Video" + setting.getVideoCount());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        MyApp.observer.notifyIncomingCall(call);*/
-    }
-
-    @Override
-    public void onInstantMessage(OnInstantMessageParam prm) {
-        System.out.println("======== Incoming pager ======== ");
-        System.out.println("From 		: " + prm.getFromUri());
-        System.out.println("To			: " + prm.getToUri());
-        System.out.println("Contact		: " + prm.getContactUri());
-        System.out.println("Mimetype	: " + prm.getContentType());
-        System.out.println("Body		: " + prm.getMsgBody());
-    }
-
 }
 
 class LisperAccount extends Account {
@@ -234,6 +203,7 @@ class LisperAccount extends Account {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         Log.e("tag","onRegState  start");
         Log.e("prm_reg",prm.toString());
+        Status.onRegState(prm);
         MyLisper.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
     }
 
@@ -260,6 +230,13 @@ class LisperAccount extends Account {
         System.out.println("Body		: " + prm.getMsgBody());
     }
 
+}
+
+class Status{
+    public static void onRegState(OnRegStateParam prm) {
+        Log.e("tag","onRegState_1  start");
+        Log.e("prm_reg_1",prm.toString());
+    }
 }
 
 class LisperCall extends Call{
