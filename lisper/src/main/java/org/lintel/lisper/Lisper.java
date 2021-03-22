@@ -327,7 +327,7 @@ class MyLisper {
     private MyLogWriter logWriter;
 
     private final String configName = "pjsua2.json";
-    private final int SIP_PORT  = Integer.parseInt(Lisper.sip_port);
+    int SIP_PORT  = 5060;
     private final int LOG_LEVEL = 4;
 
     public void init(String app_dir) {
@@ -337,6 +337,9 @@ class MyLisper {
     public void init(String app_dir, boolean own_worker_thread) {
         ///observer = obs;
         appDir = app_dir;
+        if(!Lisper.sip_port.equals("")){
+            SIP_PORT = Integer.parseInt(Lisper.sip_port);
+        }
 
         /* Create endpoint */
         try {
