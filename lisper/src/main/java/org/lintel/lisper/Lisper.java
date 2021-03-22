@@ -73,7 +73,7 @@ public class Lisper{
         public final static int BUDDY_STATE = 4;
     }
 
-    public static class Status{
+    public static interface Status{
         public static void onRegState(OnRegStateParam prm) {
             Log.e("tag","onRegState_1  start");
             Log.e("prm_reg_1",prm.toString());
