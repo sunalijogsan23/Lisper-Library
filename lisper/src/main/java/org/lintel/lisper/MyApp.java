@@ -132,11 +132,11 @@ class MyAccount extends Account implements Handler.Callback, MyAppObserver {
 
 	@Override
 	public void onRegState(OnRegStateParam prm) {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
 		Log.e("tag","onRegState  start");
 		Log.e("prm_reg",prm.toString());
 		MyApp.observer.notifyRegState(prm.getCode(), prm.getReason(), prm.getExpiration());
-		IntentFilter filter = new IntentFilter();
-		filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
 	}
 
 	@Override
