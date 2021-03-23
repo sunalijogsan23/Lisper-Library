@@ -17,7 +17,7 @@ public abstract class PhoneCallback {
     /**
      * 电话接通
      */
-    public void callConnected(LisperCall lisperCall) {}
+    public void callConnected() {}
 
     /**
      * 电话挂断

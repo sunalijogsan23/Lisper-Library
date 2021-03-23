@@ -145,7 +145,7 @@ public class Lisper{
         activity_run.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                LisperAccount.sPhoneCallback.callConnected(call);
+                LisperAccount.sPhoneCallback.callConnected();
             }
         });
     }
