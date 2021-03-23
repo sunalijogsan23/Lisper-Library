@@ -437,8 +437,8 @@ class MyLisper {
         LisperAccount acc = new LisperAccount(cfg);
         try {
             acc.create(cfg);
-            //acc.setDefault();
-            acc.setRegistration(true);
+            acc.setDefault();
+            //acc.setRegistration(true);
         } catch (Exception e) {
             acc = null;
             return null;
