@@ -134,33 +134,6 @@ public class Lisper{
         currentCall = call;
     }
 
-    public static boolean IncomingCall(Message m){
-        final LisperCall call = (LisperCall) m.obj;
-        CallOpParam prm = new CallOpParam();
-
-        /* Only one call at anytime */
-        if (currentCall != null) {
-				/*
-				prm.setStatusCode(pjsip_status_code.PJSIP_SC_BUSY_HERE);
-				try {
-					call.hangup(prm);
-				} catch (Exception e) {}
-				*/
-            // TODO: set status code
-            call.delete();
-            return true;
-        }
-
-        /* Answer with ringing */
-        prm.setStatusCode(pjsip_status_code.PJSIP_SC_RINGING);
-        /*try {
-            call.answer(prm);
-        } catch (Exception e) {}*/
-
-        currentCall = call;
-        return false;
-    }
-
     public static void acceptCall(Message m) {
         final LisperCall call = (LisperCall) m.obj;
         CallOpParam prm = new CallOpParam();
@@ -247,6 +220,12 @@ class LisperAccount extends Account {
             sRegistrationCallback.registrationOk();
         } else{
             sRegistrationCallback.registrationFailed();
+        }
+        try {
+            Lisper.account.setDefault();
+            Lisper.account.setRegistration(true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -437,8 +416,6 @@ class MyLisper {
         LisperAccount acc = new LisperAccount(cfg);
         try {
             acc.create(cfg);
-            acc.setDefault();
-            //acc.setRegistration(true);
         } catch (Exception e) {
             acc = null;
             return null;
