@@ -181,14 +181,10 @@ public class Lisper{
         opt.setVideoCount(0);
 
         try {
+            call.makeCall(uri, prm);
             activity_run.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        call.makeCall(uri, prm);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                     LisperAccount.sPhoneCallback.outgoingInit();
                 }
             });
@@ -222,22 +218,36 @@ public class Lisper{
 
         if(currentCall != null){
             Log.e("cureentcall", String.valueOf(currentCall));
+            CallOpParam prm = new CallOpParam();
+            prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
+            try {
+                currentCall.hangup(prm);
+                activity_run.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LisperAccount.sPhoneCallback.callEnd();
+                    }
+                });
+            } catch (Exception e) {
+                System.out.println("hangupcall"+e);
+            }
         }else {
             Log.e("cureentcall", "null");
+            CallOpParam prm = new CallOpParam();
+            prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
+            try {
+                call.hangup(prm);
+                activity_run.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LisperAccount.sPhoneCallback.callEnd();
+                    }
+                });
+            } catch (Exception e) {
+                System.out.println("hangupcall"+e);
+            }
         }
-        CallOpParam prm = new CallOpParam();
-        prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
-        try {
-            call.hangup(prm);
-            activity_run.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    LisperAccount.sPhoneCallback.callEnd();
-                }
-            });
-        } catch (Exception e) {
-            System.out.println("hangupcall"+e);
-        }
+
     }
 
     public static void getAccInfo(){
