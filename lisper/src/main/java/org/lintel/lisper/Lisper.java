@@ -104,8 +104,9 @@ public class Lisper{
     }
 
     public static void MakeCall(String uri) {
-        account = app.accList.get(0);
+        //account = app.accList.get(0);
         Log.e("TAG","buddy_uri---->" + uri);
+        Log.e("TAG","acc_list---->" + app.accList.get(0));
         LisperCall call = new LisperCall(account, -1);
         CallOpParam prm = new CallOpParam();
         CallSetting opt = prm.getOpt();
@@ -214,11 +215,6 @@ class LisperAccount extends Account {
         String state = prm.getCode().toString();
         if (state.equals("PJSIP_SC_OK")) {
             sRegistrationCallback.registrationOk();
-            try {
-                Lisper.account.setDefault();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         } else{
             sRegistrationCallback.registrationFailed();
         }
@@ -386,18 +382,18 @@ class MyLisper {
 
         };
         /* Create accounts. */
-		/*for (int i = 0; i < accCfgs.size(); i++) {
-			MyAccountConfig my_cfg = accCfgs.get(i);
-			MyAccount acc = addAcc(my_cfg.accCfg);
+		for (int i = 0; i < accCfgs.size(); i++) {
+			LisperAccountConfig my_cfg = accCfgs.get(i);
+			LisperAccount acc = addAcc(my_cfg.accCfg);
 			if (acc == null)
 				continue;
 
-			*//* Add Buddies *//*
-			for (int j = 0; j < my_cfg.buddyCfgs.size(); j++) {
+			 //Add Buddies
+			/*for (int j = 0; j < my_cfg.buddyCfgs.size(); j++) {
 				BuddyConfig bud_cfg = my_cfg.buddyCfgs.get(j);
 				acc.addBuddy(bud_cfg);
-			}
-		}*/
+			}*/
+		}
 
         /* Start. */
         try {
