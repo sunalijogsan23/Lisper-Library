@@ -133,8 +133,7 @@ public class Lisper{
 
     }
 
-    public static void acceptCall(Message m) {
-        final LisperCall call = (LisperCall) m.obj;
+    public static void acceptCall(LisperCall call) {
         CallOpParam prm = new CallOpParam();
         prm.setStatusCode(pjsip_status_code.PJSIP_SC_OK);
         try {
@@ -150,10 +149,9 @@ public class Lisper{
         }
     }
 
-    public static void hangupCall(Message m) {
+    public static void hangupCall(LisperCall call) {
 
         if (currentCall != null) {
-            final LisperCall call = (LisperCall) m.obj;
             CallOpParam prm = new CallOpParam();
             prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
             try {
