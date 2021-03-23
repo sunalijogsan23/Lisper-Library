@@ -151,20 +151,18 @@ public class Lisper{
 
     public static void hangupCall(LisperCall call) {
 
-        if (currentCall != null) {
-            CallOpParam prm = new CallOpParam();
-            prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
-            try {
-                call.hangup(prm);
-                activity_run.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        LisperAccount.sPhoneCallback.callEnd();
-                    }
-                });
-            } catch (Exception e) {
-                System.out.println("hangupcall"+e);
-            }
+        CallOpParam prm = new CallOpParam();
+        prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
+        try {
+            call.hangup(prm);
+            activity_run.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    LisperAccount.sPhoneCallback.callEnd();
+                }
+            });
+        } catch (Exception e) {
+            System.out.println("hangupcall"+e);
         }
     }
 
