@@ -171,6 +171,12 @@ public class Lisper{
         Log.e("Info",info);
     }
 
+    public static void dinit(){
+        app.deinit();
+        Runtime.getRuntime().gc();
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
     public static void addCallback(RegistrationCallback registrationCallback,
                                    PhoneCallback phoneCallback) {
         LisperAccount.addRegistrationCallback(registrationCallback);
@@ -511,7 +517,6 @@ class MyLisper {
         ep.delete();
         ep = null;
     }
-
 }
 
 class LisperAccountConfig {
