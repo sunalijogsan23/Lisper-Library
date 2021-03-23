@@ -67,13 +67,6 @@ public class Lisper{
     public static Context context;
     public static boolean LISPER_SC_OK = false;
 
-    public class MSG_TYPE {
-        public final static int INCOMING_CALL = 1;
-        public final static int CALL_STATE = 2;
-        public final static int REG_STATE = 3;
-        public final static int BUDDY_STATE = 4;
-    }
-
     public static void InitLisper(Activity activity,String port){
         System.loadLibrary("pjsua2");
         System.out.println("pjsip============================> Library loadedAccount");
@@ -89,6 +82,7 @@ public class Lisper{
             }
             app.init(activity.getFilesDir().getAbsolutePath());
         }
+
     }
 
     public static void Account_Regi(String username, String password,String server_url,Activity activity){
@@ -110,7 +104,7 @@ public class Lisper{
     }
 
     public static void MakeCall(String uri) {
-
+        account = app.accList.get(0);
         Log.e("TAG","buddy_uri---->" + uri);
         LisperCall call = new LisperCall(account, -1);
         CallOpParam prm = new CallOpParam();
