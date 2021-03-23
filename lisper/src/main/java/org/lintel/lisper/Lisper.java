@@ -112,30 +112,40 @@ public class Lisper{
         mStringRequest = new StringRequest(Request.Method.POST,"https://lisper.lintel.in/auth_api/", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e("response:",response.substring(0));
                 Log.e("response:",response);
 
                 JSONObject jresponse = null;
                 try {
                     jresponse = new JSONObject(response);
+                    String str_res = jresponse.getString("status");
                     Log.e("response:",jresponse.getString("status"));
+
+                    if(str_res.equals("+OK")){
+                        app = new MyLisper();
+                        accCfg = new AccountConfig();
+                        accCfg.setIdUri("sip:" + username + "@" + server_url);
+                        accCfg.getRegConfig().setRegistrarUri("sip:"+server_url);
+                        accCfg.getNatConfig().setIceEnabled(true);
+
+                        AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
+                        creds.clear();
+                        if (username.length() != 0) {
+                            creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
+                        }
+                        account = new LisperAccount(accCfg);
+                        account = app.addAcc(accCfg);
+                    }else {
+                        Log.e("response:",response);
+                        activity_run.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                LisperAccount.sRegistrationCallback.registrationFailed();
+                            }
+                        });
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                /*app = new MyLisper();
-                accCfg = new AccountConfig();
-                accCfg.setIdUri("sip:" + username + "@" + server_url);
-                accCfg.getRegConfig().setRegistrarUri("sip:"+server_url);
-                accCfg.getNatConfig().setIceEnabled(true);
-
-                AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
-                creds.clear();
-                if (username.length() != 0) {
-                    creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
-                }
-                account = new LisperAccount(accCfg);
-                account = app.addAcc(accCfg);*/
             }
         }, new Response.ErrorListener() {
             @Override
