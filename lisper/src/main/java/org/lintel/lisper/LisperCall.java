@@ -22,8 +22,12 @@ public class LisperCall extends Call {
         //MyLisper.observer.notifyCallState(this);
         try {
             CallInfo ci = getInfo();
-            if (ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
+            if (ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_CONFIRMED) {
+               // buttonHangup.setText("Hangup");//已接听
+                LisperAccount.sPhoneCallback.callConnected();
+            }else if (ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
                 this.delete();
+                LisperAccount.sPhoneCallback.callEnd();
             }
         } catch (Exception e) {
             return;
