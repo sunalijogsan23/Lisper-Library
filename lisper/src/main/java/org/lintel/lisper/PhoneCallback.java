@@ -12,12 +12,12 @@ public abstract class PhoneCallback {
     /**
      * 呼叫初始化
      */
-    public void outgoingInit(LisperCall lisperCall) {}
+    public void outgoingInit() {}
 
     /**
      * 电话接通
      */
-    public void callConnected() {}
+    public void callConnected(LisperCall lisperCall) {}
 
     /**
      * 电话挂断

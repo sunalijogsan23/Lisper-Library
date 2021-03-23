@@ -30,7 +30,7 @@ public class LisperCall extends Call {
                 activity_run.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        LisperAccount.sPhoneCallback.callConnected();
+                        LisperAccount.sPhoneCallback.callConnected(currentCall);
                     }
                 });
 

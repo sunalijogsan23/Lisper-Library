@@ -121,7 +121,7 @@ public class Lisper{
             activity_run.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    LisperAccount.sPhoneCallback.outgoingInit(call);
+                    LisperAccount.sPhoneCallback.outgoingInit();
                 }
             });
         } catch (Exception e) {
@@ -138,16 +138,16 @@ public class Lisper{
         prm.setStatusCode(pjsip_status_code.PJSIP_SC_OK);
         try {
             call.answer(prm);
-            currentCall = call;
-            activity_run.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    LisperAccount.sPhoneCallback.callConnected();
-                }
-            });
         } catch (Exception e) {
             System.out.println("answercall"+e);
         }
+        currentCall = call;
+        activity_run.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LisperAccount.sPhoneCallback.callConnected(call);
+            }
+        });
     }
 
     public static void hangupCall(LisperCall call) {
