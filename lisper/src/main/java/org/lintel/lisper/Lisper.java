@@ -118,7 +118,12 @@ public class Lisper{
 
         try {
             call.makeCall(uri, prm);
-            LisperAccount.sPhoneCallback.outgoingInit();
+            activity_run.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    LisperAccount.sPhoneCallback.outgoingInit();
+                }
+            });
         } catch (Exception e) {
             call.delete();
             return;
@@ -134,7 +139,12 @@ public class Lisper{
         prm.setStatusCode(pjsip_status_code.PJSIP_SC_OK);
         try {
             call.answer(prm);
-            LisperAccount.sPhoneCallback.callConnected();
+            activity_run.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    LisperAccount.sPhoneCallback.callConnected();
+                }
+            });
         } catch (Exception e) {
             System.out.println("answercall"+e);
         }
@@ -148,7 +158,12 @@ public class Lisper{
             prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
             try {
                 call.hangup(prm);
-                LisperAccount.sPhoneCallback.callEnd();
+                activity_run.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LisperAccount.sPhoneCallback.callEnd();
+                    }
+                });
             } catch (Exception e) {
                 System.out.println("hangupcall"+e);
             }
@@ -224,7 +239,12 @@ class LisperAccount extends Account {
                 }
             });
         } else{
-            sRegistrationCallback.registrationFailed();
+            activity_run.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    sRegistrationCallback.registrationFailed();
+                }
+            });
         }
     }
 
@@ -238,7 +258,12 @@ class LisperAccount extends Account {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        sPhoneCallback.incomingCall(call);
+        activity_run.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                sPhoneCallback.incomingCall(call);
+            }
+        });
         MyLisper.observer.notifyIncomingCall(call);
     }
 

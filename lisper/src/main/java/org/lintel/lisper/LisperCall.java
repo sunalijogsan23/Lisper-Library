@@ -12,6 +12,8 @@ import org.pjsip.pjsua2.pjmedia_type;
 import org.pjsip.pjsua2.pjsip_inv_state;
 import org.pjsip.pjsua2.pjsua_call_media_status;
 
+import static org.lintel.lisper.Lisper.activity_run;
+
 public class LisperCall extends Call {
     LisperCall(LisperAccount acc, int call_id) {
         super(acc, call_id);
@@ -24,10 +26,21 @@ public class LisperCall extends Call {
             CallInfo ci = getInfo();
             if (ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_CONFIRMED) {
                // buttonHangup.setText("Hangup");//已接听
-                LisperAccount.sPhoneCallback.callConnected();
+                activity_run.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LisperAccount.sPhoneCallback.callConnected();
+                    }
+                });
+
             }else if (ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
                 this.delete();
-                LisperAccount.sPhoneCallback.callEnd();
+                activity_run.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LisperAccount.sPhoneCallback.callEnd();
+                    }
+                });
             }
         } catch (Exception e) {
             return;
