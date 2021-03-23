@@ -274,57 +274,6 @@ class LisperAccount extends Account {
 
 }
 
-class LisperCall extends Call{
-    LisperCall(LisperAccount acc, int call_id) {
-        super(acc, call_id);
-    }
-
-    @Override
-    public void onCallState(OnCallStateParam prm) {
-        MyLisper.observer.notifyCallState(this);
-        try {
-            CallInfo ci = getInfo();
-            if (ci.getState() == pjsip_inv_state.PJSIP_INV_STATE_DISCONNECTED) {
-                this.delete();
-            }
-        } catch (Exception e) {
-            return;
-        }
-    }
-
-    @Override
-    public void onCallMediaState(OnCallMediaStateParam prm) {
-        CallInfo ci;
-        try {
-            ci = getInfo();
-        } catch (Exception e) {
-            return;
-        }
-
-        CallMediaInfoVector cmiv = ci.getMedia();
-
-        for (int i = 0; i < cmiv.size(); i++) {
-            CallMediaInfo cmi = cmiv.get(i);
-            if (cmi.getType() == pjmedia_type.PJMEDIA_TYPE_AUDIO &&
-                    (cmi.getStatus() == pjsua_call_media_status.PJSUA_CALL_MEDIA_ACTIVE ||
-                            cmi.getStatus() == pjsua_call_media_status.PJSUA_CALL_MEDIA_REMOTE_HOLD))
-            {
-                // unfortunately, on Java too, the returned Media cannot be downcasted to AudioMedia
-                Media m = getMedia(i);
-                AudioMedia am = AudioMedia.typecastFromMedia(m);
-
-                // connect ports
-                try {
-                    MyLisper.ep.audDevManager().getCaptureDevMedia().startTransmit(am);
-                    am.startTransmit(MyLisper.ep.audDevManager().getPlaybackDevMedia());
-                } catch (Exception e) {
-                    continue;
-                }
-            }
-        }
-    }
-}
-
 class MyLogWriter extends LogWriter {
     @Override
     public void write(LogEntry entry) {
