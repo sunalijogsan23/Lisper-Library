@@ -181,10 +181,14 @@ public class Lisper{
         opt.setVideoCount(0);
 
         try {
-            call.makeCall(uri, prm);
             activity_run.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    try {
+                        call.makeCall(uri, prm);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     LisperAccount.sPhoneCallback.outgoingInit();
                 }
             });
