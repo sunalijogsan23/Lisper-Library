@@ -124,6 +124,7 @@ public class Lisper{
 
         try {
             call.makeCall(uri, prm);
+            LisperAccount.sPhoneCallback.outgoingInit();
         } catch (Exception e) {
             call.delete();
             return;
