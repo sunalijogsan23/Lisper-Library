@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import org.pjsip.pjsua2.Account;
 import org.pjsip.pjsua2.AccountConfig;
+import org.pjsip.pjsua2.AccountInfo;
 import org.pjsip.pjsua2.AudioMedia;
 import org.pjsip.pjsua2.AuthCredInfo;
 import org.pjsip.pjsua2.AuthCredInfoVector;
@@ -436,6 +437,8 @@ class MyLisper {
         LisperAccount acc = new LisperAccount(cfg);
         try {
             acc.create(cfg);
+            acc.setDefault();
+            acc.setRegistration(true);
         } catch (Exception e) {
             acc = null;
             return null;
