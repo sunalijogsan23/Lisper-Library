@@ -19,6 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.pjsip.pjsua2.Account;
 import org.pjsip.pjsua2.AccountConfig;
 import org.pjsip.pjsua2.AccountInfo;
@@ -57,6 +59,7 @@ import org.pjsip.pjsua2.pjsua2JNI;
 import org.pjsip.pjsua2.pjsua_call_media_status;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -109,7 +112,17 @@ public class Lisper{
         mStringRequest = new StringRequest(Request.Method.POST,"https://lisper.lintel.in/auth_api/", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.e("response:",response.substring(0));
                 Log.e("response:",response);
+
+                JSONObject jresponse = null;
+                try {
+                    jresponse = new JSONObject(response);
+                    Log.e("response:",jresponse.getString("status"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 /*app = new MyLisper();
                 accCfg = new AccountConfig();
                 accCfg.setIdUri("sip:" + username + "@" + server_url);
