@@ -221,7 +221,7 @@ class LisperAccount extends Account {
         if (state.equals("PJSIP_SC_OK")) {
             sRegistrationCallback.registrationOk();
             try {
-                Lisper.account.setRegistration(true);
+                Lisper.account.setDefault();
             } catch (Exception e) {
                 e.printStackTrace();
             }
