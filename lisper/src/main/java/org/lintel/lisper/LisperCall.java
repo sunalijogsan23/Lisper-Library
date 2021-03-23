@@ -13,6 +13,7 @@ import org.pjsip.pjsua2.pjsip_inv_state;
 import org.pjsip.pjsua2.pjsua_call_media_status;
 
 import static org.lintel.lisper.Lisper.activity_run;
+import static org.lintel.lisper.Lisper.currentCall;
 
 public class LisperCall extends Call {
     LisperCall(LisperAccount acc, int call_id) {
