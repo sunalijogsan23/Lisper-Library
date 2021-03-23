@@ -111,16 +111,6 @@ public class Lisper{
 
     public static void MakeCall(String uri) {
 
-        try {
-            account.setRegistration(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Log.e("acc",account.toString());
-        if (currentCall != null) {
-            return;
-        }
-
         Log.e("TAG","buddy_uri---->" + uri);
         LisperCall call = new LisperCall(account, -1);
         CallOpParam prm = new CallOpParam();
@@ -137,6 +127,7 @@ public class Lisper{
         }
 
         currentCall = call;
+
     }
 
     public static void acceptCall(Message m) {
@@ -229,6 +220,11 @@ class LisperAccount extends Account {
         String state = prm.getCode().toString();
         if (state.equals("PJSIP_SC_OK")) {
             sRegistrationCallback.registrationOk();
+            try {
+                Lisper.account.setRegistration(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else{
             sRegistrationCallback.registrationFailed();
         }
@@ -427,6 +423,8 @@ class MyLisper {
         }
 
         accList.add(acc);
+        String configPath = appDir + "/" + configName;
+        saveConfig(configPath);
         return acc;
     }
 
