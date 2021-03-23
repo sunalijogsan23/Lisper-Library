@@ -147,23 +147,27 @@ public class Lisper{
         } catch (Exception e) {
             System.out.println("answercall"+e);
         }
+        currentCall = call;
     }
 
-    public static void hangupCall(LisperCall call) {
+    public static void hangupCall() {
 
-        CallOpParam prm = new CallOpParam();
-        prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
-        try {
-            call.hangup(prm);
-            activity_run.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    LisperAccount.sPhoneCallback.callEnd();
-                }
-            });
-        } catch (Exception e) {
-            System.out.println("hangupcall"+e);
+        if(currentCall != null){
+            CallOpParam prm = new CallOpParam();
+            prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
+            try {
+                currentCall.hangup(prm);
+                activity_run.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LisperAccount.sPhoneCallback.callEnd();
+                    }
+                });
+            } catch (Exception e) {
+                System.out.println("hangupcall"+e);
+            }
         }
+
     }
 
     public static void getAccInfo(){
