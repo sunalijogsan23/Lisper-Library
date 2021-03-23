@@ -151,6 +151,7 @@ public class Lisper{
     }
 
     public static void hangupCall(LisperCall call) {
+        Log.e("cureentcall", String.valueOf(currentCall));
         CallOpParam prm = new CallOpParam();
         prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
         try {
