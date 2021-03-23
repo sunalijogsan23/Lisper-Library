@@ -111,6 +111,11 @@ public class Lisper{
 
     public static void MakeCall(String uri) {
 
+        try {
+            account.setRegistration(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Log.e("acc",account.toString());
         if (currentCall != null) {
             return;
@@ -220,12 +225,6 @@ class LisperAccount extends Account {
             sRegistrationCallback.registrationOk();
         } else{
             sRegistrationCallback.registrationFailed();
-        }
-        try {
-            Lisper.account.setDefault();
-            Lisper.account.setRegistration(true);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
