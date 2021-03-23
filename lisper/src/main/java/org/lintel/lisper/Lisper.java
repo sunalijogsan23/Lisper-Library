@@ -11,6 +11,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.pjsip.pjsua2.Account;
 import org.pjsip.pjsua2.AccountConfig;
 import org.pjsip.pjsua2.AccountInfo;
@@ -50,6 +58,8 @@ import org.pjsip.pjsua2.pjsua_call_media_status;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.lintel.lisper.Lisper.activity_run;
 import static org.lintel.lisper.Lisper.currentCall;
@@ -91,19 +101,50 @@ public class Lisper{
     public static void Account_Regi(String username, String password,String server_url,Activity activity){
         context = activity.getApplicationContext();
         activity_run= activity;
-        app = new MyLisper();
-        accCfg = new AccountConfig();
-        accCfg.setIdUri("sip:" + username + "@" + server_url);
-        accCfg.getRegConfig().setRegistrarUri("sip:"+server_url);
-        accCfg.getNatConfig().setIceEnabled(true);
 
-        AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
-        creds.clear();
-        if (username.length() != 0) {
-            creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
-        }
-        account = new LisperAccount(accCfg);
-        account = app.addAcc(accCfg);
+        RequestQueue mRequestQueue;
+        StringRequest mStringRequest;
+
+        mRequestQueue = Volley.newRequestQueue(context);
+        mStringRequest = new StringRequest(Request.Method.POST,"https://lisper.lintel.in/auth_api/", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("response:",response);
+                /*app = new MyLisper();
+                accCfg = new AccountConfig();
+                accCfg.setIdUri("sip:" + username + "@" + server_url);
+                accCfg.getRegConfig().setRegistrarUri("sip:"+server_url);
+                accCfg.getNatConfig().setIceEnabled(true);
+
+                AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
+                creds.clear();
+                if (username.length() != 0) {
+                    creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
+                }
+                account = new LisperAccount(accCfg);
+                account = app.addAcc(accCfg);*/
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error:",error.toString());
+            }
+        }){
+            @Override
+            public byte[] getBody() throws com.android.volley.AuthFailureError {
+                String str = "{\"username\":\""+username+"\",\"app-uuid\":\""+""+"\",\"server\":\""+"lintel.in"+"\",\"app_version\":\""+"1.2"+"\"}";
+                return str.getBytes();
+            };
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                params.put("Authorization","Token 099a9bd6391a48549029a3f27ad206b1b34dcbc3d505403d8737ff09d9ebef9cfd34d53c70544b29a89b9b7b622d9d0c");
+                return params;
+            }
+        };
+        mRequestQueue.add(mStringRequest);
     }
 
     public static void MakeCall(String uri) {
@@ -151,7 +192,12 @@ public class Lisper{
     }
 
     public static void hangupCall(LisperCall call) {
-        Log.e("cureentcall", String.valueOf(currentCall));
+
+        if(currentCall != null){
+            Log.e("cureentcall", String.valueOf(currentCall));
+        }else {
+            Log.e("cureentcall", "null");
+        }
         CallOpParam prm = new CallOpParam();
         prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
         try {
