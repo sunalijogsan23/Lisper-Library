@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -50,6 +51,7 @@ import org.pjsip.pjsua2.pjsua_call_media_status;
 import java.io.File;
 import java.util.ArrayList;
 
+import static org.lintel.lisper.Lisper.activity_run;
 import static org.lintel.lisper.Lisper.currentCall;
 
 interface LisperObserver {
@@ -65,6 +67,7 @@ public class Lisper{
     public static AccountConfig accCfg = null;
     public static String sip_port = "";
     public static Context context;
+    public static Activity activity_run;
     public static boolean LISPER_SC_OK = false;
 
     public static void InitLisper(Activity activity,String port){
@@ -87,7 +90,7 @@ public class Lisper{
 
     public static void Account_Regi(String username, String password,String server_url,Activity activity){
         context = activity.getApplicationContext();
-
+        activity_run= activity;
         app = new MyLisper();
         accCfg = new AccountConfig();
         accCfg.setIdUri("sip:" + username + "@" + server_url);
@@ -106,7 +109,7 @@ public class Lisper{
     public static void MakeCall(String uri) {
         //account = app.accList.get(0);
         Log.e("TAG","buddy_uri---->" + uri);
-        Log.e("TAG","acc_list---->" + app.accList.get(0));
+        Log.e("TAG","acc_list---->" + app.accList.get(0).toString());
         LisperCall call = new LisperCall(account, -1);
         CallOpParam prm = new CallOpParam();
         CallSetting opt = prm.getOpt();
@@ -214,7 +217,12 @@ class LisperAccount extends Account {
 
         String state = prm.getCode().toString();
         if (state.equals("PJSIP_SC_OK")) {
-            sRegistrationCallback.registrationOk();
+            activity_run.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    sRegistrationCallback.registrationOk();
+                }
+            });
         } else{
             sRegistrationCallback.registrationFailed();
         }
