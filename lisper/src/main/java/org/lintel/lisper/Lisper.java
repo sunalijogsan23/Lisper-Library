@@ -165,10 +165,10 @@ public class Lisper{
         prm.setStatusCode(pjsip_status_code.PJSIP_SC_OK);
         try {
             call.answer(prm);
+            LisperAccount.sPhoneCallback.callConnected();
         } catch (Exception e) {
             System.out.println("answercall"+e);
         }
-
     }
 
     public static void hangupCall(Message m) {
@@ -179,6 +179,7 @@ public class Lisper{
             prm.setStatusCode(pjsip_status_code.PJSIP_SC_DECLINE);
             try {
                 call.hangup(prm);
+                LisperAccount.sPhoneCallback.callEnd();
             } catch (Exception e) {
                 System.out.println("hangupcall"+e);
             }
@@ -193,6 +194,7 @@ public class Lisper{
     public static void addCallback(RegistrationCallback registrationCallback,
                                    PhoneCallback phoneCallback) {
         LisperAccount.addRegistrationCallback(registrationCallback);
+        LisperAccount.addPhoneCallback(phoneCallback);
     }
 }
 
@@ -203,6 +205,27 @@ class LisperAccount extends Account {
 
     public static void addRegistrationCallback(RegistrationCallback registrationCallback) {
         sRegistrationCallback = registrationCallback;
+    }
+
+    public static void addPhoneCallback(PhoneCallback phoneCallback) {
+        sPhoneCallback = phoneCallback;
+    }
+
+    public static void removePhoneCallback() {
+        if (sPhoneCallback != null) {
+            sPhoneCallback = null;
+        }
+    }
+
+    public static void removeRegistrationCallback() {
+        if (sRegistrationCallback != null) {
+            sRegistrationCallback = null;
+        }
+    }
+
+    public void removeAllCallback() {
+        removePhoneCallback();
+        removeRegistrationCallback();
     }
 
     LisperAccount(AccountConfig config) {
@@ -235,6 +258,7 @@ class LisperAccount extends Account {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        sPhoneCallback.incomingCall(call);
         MyLisper.observer.notifyIncomingCall(call);
     }
 
