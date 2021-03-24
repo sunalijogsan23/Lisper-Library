@@ -84,6 +84,7 @@ public class Lisper{
     public static Context context;
     public static Activity activity_run;
     public static boolean LISPER_SC_OK = false;
+    public static String server_urll;
 
     public static void InitLisper(Activity activity,String port){
         System.loadLibrary("pjsua2");
@@ -106,6 +107,7 @@ public class Lisper{
     public static void Account_Regi(String username, String password,String server_url,Activity activity){
         context = activity.getApplicationContext();
         activity_run= activity;
+        server_urll = server_url;
 
         RequestQueue mRequestQueue;
         StringRequest mStringRequest;
@@ -172,13 +174,16 @@ public class Lisper{
         mRequestQueue.add(mStringRequest);
     }
 
-    public static void MakeCall(String uri) {
+    public static void MakeCall(String number) {
         if(account.isValid()){
             Log.e("TAG","acc_list---->" + app.accList.get(0).toString());
         }else {
             Log.e("TAG","acc_list---->" + "Fail");
         }
+        //sip:1007@pbx.lintelindia.com:5060
         //account = app.accList.get(0);
+        String uri = "sip:"+number+"@"+server_urll+":"+sip_port;
+
         Log.e("TAG","buddy_uri---->" + uri);
 
         LisperCall call = new LisperCall(account, -1);
@@ -258,7 +263,7 @@ public class Lisper{
     }
 
     public static void getAccInfo(){
-        String info = accCfg.getIdUri() + ", " + accCfg.getRegConfig().getRegistrarUri();
+        String info = accCfg.getIdUri() + ", " + accCfg.getRegConfig().getRegistrarUri() + accCfg.getCallConfig();
         Log.e("Info",info);
     }
 
