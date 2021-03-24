@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.pjsip.pjsua2.Account;
 import org.pjsip.pjsua2.AccountConfig;
 import org.pjsip.pjsua2.AccountInfo;
+import org.pjsip.pjsua2.AudDevManager;
 import org.pjsip.pjsua2.AudioMedia;
 import org.pjsip.pjsua2.AuthCredInfo;
 import org.pjsip.pjsua2.AuthCredInfoVector;
@@ -291,6 +292,70 @@ public class Lisper{
                                    PhoneCallback phoneCallback) {
         LisperAccount.addRegistrationCallback(registrationCallback);
         LisperAccount.addPhoneCallback(phoneCallback);
+    }
+
+    public void holdCall(LisperCall lisperCall) {
+        if(currentCall != null){
+            CallOpParam prm = new CallOpParam(true);
+            try {
+                currentCall.setHold(prm);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            CallOpParam prm = new CallOpParam(true);
+            try {
+                lisperCall.setHold(prm);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void setMute(boolean mute,LisperCall lisperCall) {
+        // return immediately if we are not changing the current state
+        CallInfo info;
+        try {
+            if(currentCall!=null){
+                info = currentCall.getInfo();
+            }else {
+                info = lisperCall.getInfo();
+            }
+
+        } catch (Exception exc) {
+            return;
+        }
+
+        for (int i = 0; i < info.getMedia().size(); i++) {
+            Media media;
+            if(currentCall!=null){
+                media = currentCall.getMedia(i);
+            }else {
+                media = lisperCall.getMedia(i);
+            }
+
+            CallMediaInfo mediaInfo = info.getMedia().get(i);
+
+            if (mediaInfo.getType() == pjmedia_type.PJMEDIA_TYPE_AUDIO
+                    && media != null
+                    && mediaInfo.getStatus() == pjsua_call_media_status.PJSUA_CALL_MEDIA_ACTIVE) {
+                AudioMedia audioMedia = AudioMedia.typecastFromMedia(media);
+
+                // connect or disconnect the captured audio
+                try {
+                    AudDevManager mgr = MyLisper.ep.audDevManager();
+
+                    if (mute) {
+                        mgr.getCaptureDevMedia().stopTransmit(audioMedia);
+                    } else {
+                        mgr.getCaptureDevMedia().startTransmit(audioMedia);
+                    }
+
+                } catch (Exception exc) {
+                }
+            }
+        }
     }
 }
 
