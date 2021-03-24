@@ -33,6 +33,7 @@ import org.pjsip.pjsua2.CallInfo;
 import org.pjsip.pjsua2.CallMediaInfo;
 import org.pjsip.pjsua2.CallMediaInfoVector;
 import org.pjsip.pjsua2.CallOpParam;
+import org.pjsip.pjsua2.CallSendRequestParam;
 import org.pjsip.pjsua2.CallSetting;
 import org.pjsip.pjsua2.ContainerNode;
 import org.pjsip.pjsua2.Endpoint;
@@ -47,6 +48,7 @@ import org.pjsip.pjsua2.OnCallStateParam;
 import org.pjsip.pjsua2.OnIncomingCallParam;
 import org.pjsip.pjsua2.OnInstantMessageParam;
 import org.pjsip.pjsua2.OnRegStateParam;
+import org.pjsip.pjsua2.SipTxOption;
 import org.pjsip.pjsua2.StringVector;
 import org.pjsip.pjsua2.TransportConfig;
 import org.pjsip.pjsua2.UaConfig;
@@ -171,9 +173,14 @@ public class Lisper{
     }
 
     public static void MakeCall(String uri) {
+        if(account.isValid()){
+            Log.e("TAG","acc_list---->" + app.accList.get(0).toString());
+        }else {
+            Log.e("TAG","acc_list---->" + "Fail");
+        }
         //account = app.accList.get(0);
         Log.e("TAG","buddy_uri---->" + uri);
-        Log.e("TAG","acc_list---->" + app.accList.get(0).toString());
+
         LisperCall call = new LisperCall(account, -1);
         CallOpParam prm = new CallOpParam();
         CallSetting opt = prm.getOpt();
@@ -253,6 +260,20 @@ public class Lisper{
     public static void getAccInfo(){
         String info = accCfg.getIdUri() + ", " + accCfg.getRegConfig().getRegistrarUri();
         Log.e("Info",info);
+    }
+
+    public static void Make_DTFM_call(LisperCall call,int code){
+        CallSendRequestParam prm = new CallSendRequestParam();
+        prm.setMethod("INFO");
+        SipTxOption txo = new SipTxOption();
+        txo.setContentType("application/dtmf-relay");
+        txo.setMsgBody("Signal=" + String.valueOf(code) + "\n" + "Duration=160");
+        prm.setTxOption(txo);
+        try {
+            call.sendRequest(prm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void dinit(){
